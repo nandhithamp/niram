@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/constants/call_functions.dart';
+import 'package:niram/user/home_screen.dart';
 import 'package:pinput/pinput.dart';
+
+import '../admin/admin_home.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
@@ -77,22 +82,28 @@ class OtpScreen extends StatelessWidget {
               SizedBox(height:height/50 ,),
               Text("Resend OTP in: 30 sec",style: TextStyle(color: Colors.grey,fontSize: 15),),
               SizedBox(height:height/100 ,),
-              Container(
-                height: 57,
-                width: 147,
-                decoration: BoxDecoration(boxShadow: [BoxShadow(blurRadius: 2,color: Colors.grey,offset: Offset(0, 3)),],
-                    borderRadius: BorderRadius.circular(30),
-                    gradient: LinearGradient(begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xff3D9698).withOpacity(0.5), Color(0xff0996A9).withOpacity(0.6)])),
-                child: Tab(
-                    icon: Text(
-                      "Submit",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    )),
+              GestureDetector(
+                onTap: (){
+                  callNextReplacement(context, AdminHome());
+                },
+                child: Container(
+                  height: 57,
+                  width: 147,
+                  decoration: BoxDecoration(boxShadow: [BoxShadow(blurRadius: 2,color: Colors.grey,offset: Offset(0, 3)),],
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: LinearGradient(begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Color(0xff3D9698).withOpacity(0.5), Color(0xff0996A9).withOpacity(0.6)])),
+                  child:  Center(
+                    child: Text(
+                          "Submit",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                  ),
+                ),
               ),
               Container(width: width,
                 height: height / 2.4,

@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/constants/call_functions.dart';
+
+import 'add_contest.dart';
+import 'contestdescription_screen.dart';
 
 class AllContests extends StatelessWidget {
   const AllContests({super.key});
@@ -29,9 +33,14 @@ class AllContests extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+
         appBar: AppBar(
           centerTitle: true,
-          leading: Icon(Icons.arrow_back_outlined, color: Color(0xff0C8290),size: 25,),
+          iconTheme: IconThemeData(
+            color: Color(0xff0C8290),
+            size: 25,
+          ),
+
           title: Text(
             "Contest",
             style: TextStyle(
@@ -59,25 +68,21 @@ class AllContests extends StatelessWidget {
               ],
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-
-              Text(
-                'Add New Contest',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            onPressed: (){
+            callNext(context, AddContests());
+            },
+            child: Text(
+              'Add New Contest',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
-            ],
+            ),
           ),
         ),
-
-
-
-
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -132,8 +137,6 @@ class AllContests extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-
-
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.white,
@@ -146,8 +149,9 @@ class AllContests extends StatelessWidget {
                     })),
               ),
               SizedBox(
-                height: 500,
+
                 child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                     itemCount: Images.length,
                     shrinkWrap: true,
           
@@ -155,23 +159,28 @@ class AllContests extends StatelessWidget {
                     itemBuilder: ((context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: height / 4,
-                          width: width,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              // color: Colors.pink,
-                              image: DecorationImage(
-                                  image: AssetImage(Images[index]),
-                                  fit: BoxFit.fill)),
-                          child: Center(
-                              child: Text(
-                                titles[index],
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              )),
+                        child: GestureDetector(
+                          onTap: (){
+                            callNext(context, ContestDescriptions());
+                          },
+                          child: Container(
+                            height: height / 4,
+                            width: width,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                // color: Colors.pink,
+                                image: DecorationImage(
+                                    image: AssetImage(Images[index]),
+                                    fit: BoxFit.fill)),
+                            child: Center(
+                                child: Text(
+                                  titles[index],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                )),
+                          ),
                         ),
                       );
                     })),

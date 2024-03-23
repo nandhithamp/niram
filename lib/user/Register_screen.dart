@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/user/login_screen.dart';
 
+import '../constants/call_functions.dart';
 import '../constants/refactoring.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -72,32 +75,37 @@ class RegisterScreen extends StatelessWidget {
                     SizedBox(
                       height: height / 30,
                     ),
-                    Container(
-                      height: 57,
-                      width: 147,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 2,
-                                color: Colors.grey,
-                                offset: Offset(0, 3)),
-                          ],
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xff3D9698).withOpacity(0.5),
-                                Color(0xff0996A9).withOpacity(0.6)
-                              ])),
-                      child: Tab(
-                          icon: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      )),
+                    GestureDetector(
+                      onTap: (){
+                        callNextReplacement(context, LoginScreen());
+                      },
+                      child: Container(
+                        height: 57,
+                        width: 147,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 2,
+                                  color: Colors.grey,
+                                  offset: Offset(0, 3)),
+                            ],
+                            borderRadius: BorderRadius.circular(30),
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xff3D9698).withOpacity(0.5),
+                                  Color(0xff0996A9).withOpacity(0.6)
+                                ])),
+                        child: Center(
+                            child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        )),
+                      ),
                     ),
                   ],
                 ),
@@ -115,7 +123,9 @@ class RegisterScreen extends StatelessWidget {
                   children: [
                     SizedBox(width: width/6,),
                     Text("Already have an account?",style: TextStyle(fontSize: 15,color: Color(0xff047E8F)),),
-                    GestureDetector(onTap: (){},
+                    GestureDetector(onTap: (){
+                      callNextReplacement(context, LoginScreen());
+                    },
                         child: Text("Login Now",style: TextStyle(fontSize: 15,color: Color(0xff785E19)))),
                   ],
                 ),

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../constants/call_functions.dart';
 import '../constants/refactoring.dart';
+import 'add_contest.dart';
 
-class ContestDescriptions extends StatefulWidget {
+class ContestDescriptions extends StatelessWidget {
   const ContestDescriptions({super.key});
 
-  @override
-  State<ContestDescriptions> createState() => _ContestDescriptionsState();
-}
-
-class _ContestDescriptionsState extends State<ContestDescriptions> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -32,7 +29,9 @@ class _ContestDescriptionsState extends State<ContestDescriptions> {
               )
           ),
           child: FloatingActionButton(
-            onPressed: () { },
+            onPressed: () {
+
+            },
             //backgroundColor: Colors.blueGrey,
             backgroundColor: Colors.transparent,
             child: Text("Edit",style: TextStyle(color: Colors.white,fontFamily: "amikosemi",fontSize: 20,fontWeight: FontWeight.bold),),
@@ -146,7 +145,7 @@ class _ContestDescriptionsState extends State<ContestDescriptions> {
                                     color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold),
-                              )
+                              ),
                             ],
                           ),
                         ),

@@ -1,21 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/admin/participants_work.dart';
+import 'package:niram/constants/call_functions.dart';
 
-class Participants extends StatefulWidget {
-  const Participants({super.key});
+class Participants extends StatelessWidget {
+   Participants({super.key});
 
-  @override
-  State<Participants> createState() => _ParticipantsState();
-}
-
-class _ParticipantsState extends State<Participants> {
   final Shader linearGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: <Color>[Color(0xff0C8290), Color(0xffBFAB78)],
   ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
+
   List<String> names = ["Hiba", "Athulya"];
+
   List<String> category = ["Oil painting", "Story"];
-  List<String> works = ["assets/oilpainting.png", "assets/story.png"];
+
+  List<String> works = ["assets/travel.jpg", "assets/story.jpg"];
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -24,10 +26,12 @@ class _ParticipantsState extends State<Participants> {
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            leading: Icon(
-              Icons.arrow_back_outlined,
+            iconTheme: IconThemeData(
               color: Color(0xff0C8290),
+              size: 25,
             ),
+
+            centerTitle: true,
             title: Text("Participants",
                 style: TextStyle(
                     fontFamily: "amikosemi",
@@ -74,9 +78,8 @@ class _ParticipantsState extends State<Participants> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: names.length,
                       itemBuilder: ((context, index) {
-                        return Container(
-                          height: 400,
-                          width: width / 2,
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
@@ -87,16 +90,26 @@ class _ParticipantsState extends State<Participants> {
                                 padding: const EdgeInsets.only(left: 15,right: 15),
                                 child: Text(category[index],style: TextStyle(color: Colors.grey,fontFamily: "amikosemi",fontSize: 18,fontWeight: FontWeight.bold),),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15,right: 15),
+                              GestureDetector(
+                               onTap: (){
+                                 callNext(context, ParticipantsWork());
+                               } ,
                                 child: Container(
-                                  padding: EdgeInsets.zero,
-                                  height: 325,
-                                  width: 337,
+                                  height: 345,
+                                  width: 387,
                                   decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(works[index]),
-                                          fit: BoxFit.fill)),
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: AssetImage(works[index]),
+                                        fit: BoxFit.cover),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 3,
+                                        color: Colors.grey,
+                                        offset: Offset(0, 3),
+                                      )
+                                    ]
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 8,),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:niram/constants/call_functions.dart';
 
 import '../constants/mycolors.dart';
 
@@ -25,8 +26,7 @@ class _AddContestsState extends State<AddContests> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          leading: Icon(
-            Icons.arrow_back_outlined,
+          iconTheme: IconThemeData(
             color: Color(0xff0C8290),
             size: 25,
           ),
@@ -53,7 +53,9 @@ class _AddContestsState extends State<AddContests> {
               )),
           child: FloatingActionButton(
             backgroundColor: Colors.transparent,
-            onPressed: () {},
+            onPressed: () {
+              back(context);
+            },
             child: Text(
               "Save",
               style: TextStyle(

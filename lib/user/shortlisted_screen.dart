@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niram/constants/refactoring.dart';
 
+import '../constants/call_functions.dart';
+
 class ShortlistedScreen extends StatelessWidget {
   const ShortlistedScreen({super.key});
 
@@ -17,7 +19,15 @@ class ShortlistedScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          leading: Icon(Icons.arrow_back_ios,color: Colors.white,size: 24,),
+          leading: IconButton(
+            onPressed: (){
+              back(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
           title: Text("Shortlisted",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w500),),
         ),
         extendBodyBehindAppBar: true,
@@ -81,7 +91,7 @@ class ShortlistedScreen extends StatelessWidget {
                                           height: 460,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(20),
-                                             image: DecorationImage(image: AssetImage("assets/nature phtography.jpg"),fit: BoxFit.cover)
+                                             image: DecorationImage(image: AssetImage("assets/travel.jpg"),fit: BoxFit.cover)
 
                                           ),
 
@@ -105,7 +115,7 @@ class ShortlistedScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                         image: AssetImage(
-                                            "assets/nature phtography.jpg"),
+                                            "assets/travel.jpg"),
                                         fit: BoxFit.cover),
                                     color: Colors.teal),
                               ),

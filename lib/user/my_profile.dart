@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:niram/constants/call_functions.dart';
+import 'package:niram/user/edit_profile.dart';
+import 'package:niram/user/login_screen.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
@@ -16,15 +19,20 @@ class _MyProfileState extends State<MyProfile> {
         child: Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
-              leading: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white,
+              leading:  IconButton(
+                onPressed: (){
+                  back(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.white,
+                ),
               ),
               backgroundColor: Colors.transparent,
-              title: const Text("My Profile",
+              title:  Text("My Profile",
                   style: TextStyle(
                       color: Colors.white,
-                      fontFamily: "amikosemi",
+
                       fontSize: 24,
                       fontWeight: FontWeight.normal)),
             ),
@@ -33,28 +41,28 @@ class _MyProfileState extends State<MyProfile> {
               Center(
                 child: Column(
                   children: [
-                    const SizedBox(
+                     SizedBox(
                       height: 200,
                     ),
                     CircleAvatar(
                       radius: 41,
                       backgroundColor: Colors.teal.shade200,
-                      child: const CircleAvatar(
+                      child:  CircleAvatar(
                         backgroundImage: AssetImage("assets/profilepic.jpg"),
                         radius: 40,
                       ),
                     ),
-                    const Text(
+                     Text(
                       "Zahr_sha",
                       style: TextStyle(
-                          fontFamily: "amikosemi",
+
                           fontSize: 24,
                           fontWeight: FontWeight.w600),
                     ),
-                    const Text(
+                     Text(
                       "9012345678",
                       style: TextStyle(
-                          fontFamily: "amikosemi",
+
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey),
@@ -63,11 +71,11 @@ class _MyProfileState extends State<MyProfile> {
                       height: 10,
                     ),
                     Container(
-                      height: height / 6,
+                      height: height / 5.5,
                       width: width / 1.3,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          gradient: const LinearGradient(
+                          gradient:  LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
@@ -75,7 +83,7 @@ class _MyProfileState extends State<MyProfile> {
                               Color(0xffA4ECE2),
                             ],
                           )),
-                      child: const Column(
+                      child:  Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
@@ -87,13 +95,19 @@ class _MyProfileState extends State<MyProfile> {
                                   "Edit Profile",
                                   style: TextStyle(
                                       color: Color(0xffFFFFFF),
-                                      fontFamily: "amikosemi",
+
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
+                                IconButton(
+                                  onPressed: () {
+                                    callNext(context, EditProfile());
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+
                                 )
                               ],
                             ),
@@ -116,11 +130,17 @@ class _MyProfileState extends State<MyProfile> {
                                         color: Color(0xffFFFFFF),
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
-                                        fontFamily: "amikosemi"),
+                                       ),
                                   ),
-                                  Icon(
-                                    Icons.logout,
-                                    color: Colors.white,
+                                  IconButton(
+                                    onPressed: () {
+                                      callNextReplacement(context, LoginScreen());
+                                    },
+                                    icon: Icon(
+                                      Icons.logout,
+                                      color: Colors.white,
+                                    ),
+
                                   )
                                 ],
                               ),

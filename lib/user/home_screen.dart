@@ -1,6 +1,13 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:niram/constants/call_functions.dart';
+import 'package:niram/user/contest_screen.dart';
+import 'package:niram/user/my_profile.dart';
+import 'package:niram/user/shortlisted_screen.dart';
+import 'package:niram/user/winners_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
     var images = [
-      'assets/thinkhappy.png',
+      'assets/thinkhappy.jpg',
       "assets/happiness.jpg",
-      "assets/canoe.png",
-      'assets/oilpainting.png',
-      'assets/mom.png'
+      "assets/canoe.jpg",
+      'assets/oil_painting.jpg',
+      'assets/mom.jpg'
     ];
 
     var width = MediaQuery.of(context).size.width;
@@ -32,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           toolbarHeight: 80,
           title: ShaderMask(
@@ -43,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
-                  fontFamily: 'amikosemi',
                   fontWeight: FontWeight.w600),
             ),
           ),
@@ -54,12 +61,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10,
                 ),
                 Stack(children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage("assets/profilepic.jpg"),
-                    radius: 30,
+                  GestureDetector(
+                    onTap: (){
+                      callNext(context, MyProfile());
+                    },
+                    child: CircleAvatar(
+                      radius: 31,
+                      backgroundColor: Colors.teal.shade200,
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage("assets/profilepic.jpg"),
+                        radius: 30,
+                      ),
+                    ),
                   ),
                   Positioned(
-
                       left: 40,
                       child: CircleAvatar(
                         backgroundColor: Color(0xff088090),
@@ -76,7 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start, children: [
             SizedBox(
               height: 10,
             ),
@@ -85,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 "Recent Contests",
                 style: TextStyle(
-                    fontFamily: "amikosemi",
+                  color: Colors.grey.shade700,
                     fontWeight: FontWeight.w700,
                     fontSize: 18),
               ),
@@ -121,14 +137,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
-                                fontFamily: "amikosemi",
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
                             "Theme: Happiness",
                             style: TextStyle(
+                              fontSize: 20,
                                 color: Colors.white,
-                                fontFamily: "amikosemi",
                                 fontWeight: FontWeight.w700),
                           )
                         ],
@@ -147,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Categories",
                 style: TextStyle(
                     fontSize: 18,
-                    fontFamily: "amikosemi",
+                    color:  Colors.grey.shade700,
                     fontWeight: FontWeight.w700),
               ),
             ),
@@ -155,33 +170,13 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 5,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  height: 63,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                      border: Border.all(color: Color(0xff088090))),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                          backgroundImage: AssetImage("assets/contests.png")),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "Contests",
-                        style: TextStyle(
-                            fontFamily: "amikosemi",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
+                GestureDetector(
+                  onTap: (){
+                    callNext(context, ContestScreen());
+                  },
+                  child: Container(
                     height: 63,
                     width: 150,
                     decoration: BoxDecoration(
@@ -191,106 +186,127 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                            backgroundImage: AssetImage("assets/winners.png")),
+                            backgroundImage: AssetImage("assets/contests.jpg")),
                         SizedBox(
                           width: 8,
                         ),
                         Text(
-                          "Winners",
+                          "Contests",
                           style: TextStyle(
-                              fontFamily: "amikosemi",
                               fontWeight: FontWeight.w600,
                               fontSize: 16),
                         )
                       ],
-                    )),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
+                    callNext(context, WinnersScreen());
+                  },
+                  child: Container(
+                      height: 63,
+                      width: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          border: Border.all(color: Color(0xff088090))),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                              backgroundImage: AssetImage("assets/winners.jpg")),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Winners",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          )
+                        ],
+                      )),
+                ),
               ],
             ),
             SizedBox(
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                    height: 63,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(color: Color(0xff088090))),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                            backgroundImage:
-                            AssetImage("assets/shortlisted.png")),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          "Short listed",
-                          style: TextStyle(
-                              fontFamily: "amikosemi",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16),
-                        )
-                      ],
-                    )),
-                Container(
-                    height: 63,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(color: Color(0xff088090))),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                            backgroundImage: AssetImage("assets/quiz.png")),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          "Quiz",
-                          style: TextStyle(
-                              fontFamily: "amikosemi",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16),
-                        )
-                      ],
-                    )),
+                GestureDetector(
+                  onTap: (){
+                    callNext(context, ShortlistedScreen());
+                  },
+                  child: Container(
+                      height: 63,
+                      width: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          border: Border.all(color: Color(0xff088090))),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                              backgroundImage:
+                              AssetImage("assets/shortlisted.jpg")),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Short listed",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          )
+                        ],
+                      )),
+                ),
+                GestureDetector(
+                  onTap: (){
+
+                  },
+                  child: Container(
+                      height: 63,
+                      width: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          border: Border.all(color: Color(0xff088090))),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                              backgroundImage: AssetImage("assets/quiz.jpg")),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Quiz",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          )
+                        ],
+                      )),
+                ),
               ],
             ),
             SizedBox(
               height: 10,
             ),
-
-            // Padding(
-            //   padding: const EdgeInsets.all(12),
-            //   child: Container(
-            //     height: 250,
-            //     width: 398,
-            //     decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage("assets/thinkhappy.png")),
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //   ),
-            // )
             CarouselSlider.builder(
               itemCount: images.length,
               itemBuilder: (context, index, realIndex) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(38),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Image.asset(
-                        images[index],
-                        fit: BoxFit.cover,
-                      ),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    height:150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(image: AssetImage(images[index]),fit: BoxFit.cover)
                     ),
+
                   ),
                 );
               },
@@ -307,8 +323,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       caroselIndex(index);
                     });
-
-                    // print("activvgvg"+Activeindex.toString());
                   }),
             ),
 
@@ -321,8 +335,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 buildIndiCator(int count, BuildContext context, int activeindex) {
-  //    print(activeIndex.toString()+"dpddoopf");
-
   return Center(
       child: Padding(
           padding: const EdgeInsets.only(top: 6),

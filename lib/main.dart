@@ -6,6 +6,7 @@ import 'package:niram/user/contestdetial_screen.dart';
 import 'package:niram/user/login_screen.dart';
 import 'package:niram/user/otp_screen.dart';
 import 'package:niram/user/shortlisted_screen.dart';
+import 'package:niram/user/splash_screen.dart';
 import 'package:niram/user/winners_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,11 @@ import 'admin/admins_screen.dart';
 import 'admin/allcontests_screen.dart';
 import 'admin/category_screen.dart';
 import 'admin/contestdescription_screen.dart';
+import 'admin/jury members_screen.dart';
+import 'admin/participants_screen.dart';
+import 'admin/participants_work.dart';
+import 'admin/users_screen.dart';
+import 'admin/winners_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +44,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:AdminHome(),
+        home:Splash(),
       ),
     );
   }

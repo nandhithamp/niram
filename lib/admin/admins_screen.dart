@@ -121,6 +121,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../constants/call_functions.dart';
+
 class Admins extends StatelessWidget {
   const Admins({super.key});
 
@@ -151,14 +153,14 @@ class Admins extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: Icon(
-            Icons.arrow_back_outlined,
+          iconTheme: IconThemeData(
             color: Color(0xff0C8290),
+            size: 25,
           ),
-          centerTitle: true,
+        centerTitle: true,
           title: Text("Admins",
               style: TextStyle(
-                  fontFamily: "amikosemi",
+
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   foreground: Paint()..shader = linearGradient)),
@@ -221,7 +223,7 @@ class Admins extends StatelessWidget {
                                           hintText: "Name",
                                           hintStyle: TextStyle(
                                               color: Colors.grey,
-                                              fontFamily: "amikosemi",
+
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold)),
                                     ),
@@ -240,7 +242,7 @@ class Admins extends StatelessWidget {
                                           hintText: "Designation",
                                           hintStyle: TextStyle(
                                               color: Colors.grey,
-                                              fontFamily: "amikosemi",
+
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold)),
                                     ),
@@ -252,7 +254,9 @@ class Admins extends StatelessWidget {
                               ),
                               Center(
                                 child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    back(context);
+                                  },
                                   child: Container(
                                     height: height / 12,
                                     width: width / 2.5,
@@ -271,7 +275,7 @@ class Admins extends StatelessWidget {
                                       "Add",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontFamily: "amikosemi",
+
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     )),

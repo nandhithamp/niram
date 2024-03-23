@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/call_functions.dart';
+
 class WinnersScreen extends StatelessWidget {
   const WinnersScreen({super.key});
 
@@ -16,7 +18,15 @@ class WinnersScreen extends StatelessWidget {
 
           backgroundColor: Colors.transparent,
 
-          leading: Icon(Icons.arrow_back_ios,color: Colors.white,),
+          leading: IconButton(
+            onPressed: (){
+              back(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
           title: Text(
             "Winners",
             style: TextStyle(

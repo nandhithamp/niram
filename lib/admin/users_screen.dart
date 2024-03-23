@@ -13,35 +13,54 @@ class Users extends StatelessWidget {
       end: Alignment.bottomCenter,
       colors: <Color>[Color(0xff0C8290), Color(0xffBFAB78)],
     ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
-
-    List<String> jury_name = ["Name", "Name","Name","Name"];
-    List<String> jury_destination=["Destination","Destination","Destination","Destination"];
-    List<String> jury_phone=["phone","phone","phone","phone",];
-    List<String> jury_place=["place","place","place","place",];
-    List<String> images = ["assets/person1.png", "assets/person2.png","assets/person3.png","assets/person4.png"];
+    //
+    // List<String> name = ["Name", "Name", "Name", "Name"];
+    // List<String> usersdestination= [
+    //   "Destination",
+    //   "Destination",
+    //   "Destination",
+    //   "Destination"
+    // ];
+    // List<String> phone = [
+    //   "phone",
+    //   "phone",
+    //   "phone",
+    //   "phone",
+    // ];
+    // List<String> place = [
+    //   "place",
+    //   "place",
+    //   "place",
+    //   "place",
+    // ];
+    List<String> images = [
+      "assets/person1.jpg",
+      "assets/person2.jpg",
+      "assets/person3.jpg",
+      "assets/person4.jpg"
+    ];
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: Icon(
-            Icons.arrow_back_outlined,
+          iconTheme: IconThemeData(
             color: Color(0xff0C8290),
+            size: 25,
           ),
+          centerTitle: true,
           title: Text("Users",
               style: TextStyle(
-                  fontFamily: "amikosemi",
+
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   foreground: Paint()..shader = linearGradient)),
         ),
-
-
         backgroundColor: Colors.white,
         body: Column(
           children: [
             Expanded(
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: jury_name.length,
+                    itemCount: images.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.all(8.0),
@@ -53,7 +72,6 @@ class Users extends StatelessWidget {
                               color: Color(0xff047E8F),
                             ),
                             child: Row(
-
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
@@ -62,15 +80,45 @@ class Users extends StatelessWidget {
                                     radius: 50,
                                   ),
                                 ),
-                                SizedBox(width: 30,),
-                                Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-
-                                    Text(jury_name[index],style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,fontFamily: 'amikosemi'),),
-                                    Text(jury_destination[index],style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,fontFamily: 'amikosemi'),),
-                                    Text(jury_phone[index],style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,fontFamily: 'amikosemi'),),
-                                    Text(jury_place[index],style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,fontFamily: 'amikosemi'),)
+                                    Text(
+                                      "name",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Text(
+                                     "Destination",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Text(
+                                      "phone",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Text(
+                                      "place",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          ),
+                                    )
                                   ],
                                 )
                               ],

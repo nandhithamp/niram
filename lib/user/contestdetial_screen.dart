@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/constants/call_functions.dart';
 import 'package:niram/constants/refactoring.dart';
+import 'package:niram/user/upload_screen.dart';
 
 class ContestDetials extends StatelessWidget {
   const ContestDetials({super.key});
@@ -146,32 +149,37 @@ class ContestDetials extends StatelessWidget {
                           SizedBox(
                             width: width / 10,
                           ),
-                          Container(
-                            height: height / 20,
-                            width: width / 2.3,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xff1A8894),
-                                    Color(0xff79B3AA),
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
+                          GestureDetector(
+                            onTap: (){
+                              callNext(context, UploadScreen());
+                            },
+                            child: Container(
+                              height: height / 20,
+                              width: width / 2.3,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xff1A8894),
+                                      Color(0xff79B3AA),
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 3,
+                                        color: Colors.grey,
+                                        offset: Offset(0, 3))
+                                  ]),
+                              child: Center(
+                                child: Text(
+                                  "Participate",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
                                 ),
-                                borderRadius: BorderRadius.circular(50),
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 3,
-                                      color: Colors.grey,
-                                      offset: Offset(0, 3))
-                                ]),
-                            child: Center(
-                              child: Text(
-                                "Participate",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
                               ),
                             ),
                           ),

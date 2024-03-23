@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../constants/call_functions.dart';
+
 
 class Categories extends StatelessWidget {
   const Categories({super.key});
@@ -32,8 +34,7 @@ class Categories extends StatelessWidget {
             appBar: AppBar(
               centerTitle: true,
               backgroundColor: Colors.white,
-              leading: Icon(
-                Icons.arrow_back_outlined,
+              iconTheme: IconThemeData(
                 color: Color(0xff0C8290),
                 size: 25,
               ),
@@ -105,7 +106,9 @@ class Categories extends StatelessWidget {
 
                                   Center(
                                     child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        back(context);
+                                      },
                                       child: Container(
                                         height: height / 12,
                                         width: width / 2.5,

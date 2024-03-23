@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ListofWinners extends StatelessWidget {
-  const ListofWinners({super.key});
+class WinnersList extends StatelessWidget {
+  const WinnersList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,36 +13,39 @@ class ListofWinners extends StatelessWidget {
       colors: <Color>[Color(0xff0C8290), Color(0xffBFAB78)],
     ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
     List<String> winnersimages = [
-      "assets/mom.png",
+      "assets/mom.jpg",
       "assets/happiness.jpg",
-      "assets/canoe.png"
+      "assets/canoe.jpg"
     ];
     List<String> medals = [
-      "assets/madal 1.png",
-      "assets/medal second 1.png",
-      "assets/madal 1.png",
+      "assets/medal 1.jpg",
+      "assets/medal second 1.jpg",
+      "assets/medal 1.jpg",
     ];
-    List<String> winnersname = ["Ayisha",
+    List<String> winnersName = [
+      "Ayisha",
       "Rayan",
       "Sneha"
     ];
-    List<String> wrk = ["Digital Painting",
+    List<String> wrk = [
+      "Digital Painting",
       "Phography",
       "Phography"
     ];
-    List<String> theme = ["Theme:Mom",
+    List<String> theme = [
+      "Theme:Mom",
       "Theme:happiness",
       "Theme:photography"
     ];
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back_outlined,
+        iconTheme: IconThemeData(
           color: Color(0xff0C8290),
+          size: 25,
         ),
+        centerTitle: true,
         title: Text("Winners",
             style: TextStyle(
-                fontFamily: "amikosemi",
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 foreground: Paint()..shader = linearGradient)),
@@ -52,7 +55,7 @@ class ListofWinners extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Container(
                 height: height / 12,
                 width: width,
@@ -68,7 +71,6 @@ class ListofWinners extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontFamily: "amikosemi",
                           fontWeight: FontWeight.normal),
                     ),
                     Icon(
@@ -113,22 +115,22 @@ class ListofWinners extends StatelessWidget {
                                 scale: 15,
                               ),
                               Text(
-                                winnersname[index],
+                                winnersName[index],
                                 style: TextStyle(
-                                    fontFamily: "amikosemi",
+
                                     fontWeight: FontWeight.bold,
                                     fontSize: 24),
                               ),
                               Text(wrk[index],
                                   style: TextStyle(
-                                      fontFamily: "amikosemi",
+
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                       color: Colors.grey)),
                               Text(
                                   theme[index],
                                   style: TextStyle(
-                                      fontFamily: "amikosemi",
+
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                       color: Colors.grey)),

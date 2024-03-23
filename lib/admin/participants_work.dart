@@ -19,9 +19,9 @@ class _ParticipantsWorkState extends State<ParticipantsWork> {
   @override
   Widget build(BuildContext context) {
     var images = [
-      "assets/happiness.jpg",
-      'assets/thinkhappy.png',
-      'assets/oilpainting.png'
+      "assets/travel.jpg",
+      "assets/travel.jpg",
+      "assets/travel.jpg",
     ];
     final Shader linearGradient = LinearGradient(
       begin: Alignment.topCenter,
@@ -30,10 +30,12 @@ class _ParticipantsWorkState extends State<ParticipantsWork> {
     ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back_outlined,
+        iconTheme: IconThemeData(
           color: Color(0xff0C8290),
+          size: 25,
         ),
+
+        centerTitle: true,
         title: Text("Participant Work",
             style: TextStyle(
                 fontFamily: "amikosemi",
@@ -42,47 +44,48 @@ class _ParticipantsWorkState extends State<ParticipantsWork> {
                 foreground: Paint()..shader = linearGradient)),
       ),
       backgroundColor: Colors.white,
-      body: Column(children: [
-        // Divider(color: Colors.grey,endIndent: 1,indent: 1,height: 1),
-        CarouselSlider.builder(
-          itemCount: images.length,
-          itemBuilder: (context, index, realIndex) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(38),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    images[index],
-                    fit: BoxFit.cover,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+
+            children: [
+
+          // Divider(color: Colors.grey,endIndent: 1,indent: 1,height: 1),
+          CarouselSlider.builder(
+            itemCount: images.length,
+            itemBuilder: (context, index, realIndex) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage(images[index],),
+                    fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(15),
                   ),
+
                 ),
-              ),
-            );
-          },
-          options: CarouselOptions(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              height: MediaQuery.of(context).size.height / 2.5,
-              viewportFraction: 1,
-              autoPlay: true,
-              pageSnapping: true,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-              enlargeCenterPage: true,
-              autoPlayInterval: const Duration(seconds: 4),
-              onPageChanged: (index, reason) {
-                setState(() {
-                  caroselIndex(index);
-                });
+              );
+            },
+            options: CarouselOptions(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                height: MediaQuery.of(context).size.height / 2.5,
+                viewportFraction: 1,
+                autoPlay: true,
+                pageSnapping: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                enlargeCenterPage: true,
+                autoPlayInterval: const Duration(seconds: 4),
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    caroselIndex(index);
+                  });
 
-                // print("activvgvg"+Activeindex.toString());
-              }),
-        ),
+                  // print("activvgvg"+Activeindex.toString());
+                }),
+          ),
 
-        buildIndiCator(images.length, context, Activeindex),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Row(
+          buildIndiCator(images.length, context, Activeindex),
+          Row(
             children: [
               Text(
                 "Participants Name :",
@@ -97,13 +100,10 @@ class _ParticipantsWorkState extends State<ParticipantsWork> {
               )
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Row(
+          Row(
             children: [
               Text(
-                "Contests:",
+                "Contest :",
                 style: TextStyle(fontFamily: 'amikosemi', fontSize: 20),
               ),
               Text(
@@ -115,13 +115,10 @@ class _ParticipantsWorkState extends State<ParticipantsWork> {
               )
             ],
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Row(
+          Row(
             children: [
               Text(
-                "Theme:",
+                "Theme : ",
                 style: TextStyle(fontFamily: 'amikosemi', fontSize: 20),
               ),
               Text(
@@ -133,8 +130,8 @@ class _ParticipantsWorkState extends State<ParticipantsWork> {
               )
             ],
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
+import '../constants/call_functions.dart';
 // import 'package:niram/constant/colors.dart';
 
 class JuryMembers extends StatelessWidget {
@@ -17,6 +19,7 @@ class JuryMembers extends StatelessWidget {
       colors: <Color>[Color(0xff0C8290), Color(0xffBFAB78)],
     ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
 
+
     List<String> jury_name = ["Name", "Name", "Name", "Name"];
     List<String> jury_destination = [
       "Destination",
@@ -24,24 +27,23 @@ class JuryMembers extends StatelessWidget {
       "Destination",
       "Destination"
     ];
-    // List<String> jury_phone=["phone","phone","phone","phone",];
-    // List<String> jury_place=["place","place","place","place",];
     List<String> images = [
-      "assets/person1.png",
-      "assets/person2.png",
-      "assets/person3.png",
-      "assets/person4.png"
+      "assets/person1.jpg",
+      "assets/person2.jpg",
+      "assets/person3.jpg",
+      "assets/person4.jpg"
     ];
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: Icon(
-            Icons.arrow_back_outlined,
+          iconTheme: IconThemeData(
             color: Color(0xff0C8290),
+            size: 25,
           ),
+          centerTitle: true,
           title: Text("jury Members",
               style: TextStyle(
-                  fontFamily: "amikosemi",
+
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   foreground: Paint()..shader = linearGradient)),
@@ -98,7 +100,7 @@ class JuryMembers extends StatelessWidget {
                                           hintText: "Name",
                                           hintStyle: TextStyle(
                                               color: Colors.grey,
-                                              fontFamily: "amikosemi",
+
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold)),
                                     ),
@@ -114,7 +116,7 @@ class JuryMembers extends StatelessWidget {
                                           hintText: "Designation",
                                           hintStyle: TextStyle(
                                               color: Colors.grey,
-                                              fontFamily: "amikosemi",
+
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold)),
                                     ),
@@ -128,7 +130,9 @@ class JuryMembers extends StatelessWidget {
                               ),
                               Center(
                                 child: TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    back(context);
+                                  },
                                   child: Container(
                                     height: height / 12,
                                     width: width / 2.5,
@@ -147,7 +151,7 @@ class JuryMembers extends StatelessWidget {
                                           "Add",
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontFamily: "amikosemi",
+
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
                                         )
@@ -217,14 +221,14 @@ class JuryMembers extends StatelessWidget {
                                         ),
                                         Image.asset(
                                           "assets/edit.png",
-                                          scale: 20,
+                                          scale: 4,
                                         ),
                                         SizedBox(
                                           width: 8,
                                         ),
                                         Image.asset(
                                           "assets/delete.png",
-                                          scale: 20,
+                                          scale: 4,
                                         ),
                                       ],
                                     ),
@@ -258,12 +262,3 @@ class JuryMembers extends StatelessWidget {
     );
   }
 }
-//  Row(mainAxisAlignment: MainAxisAlignment.center,
-//                                       children: [
-//                                         SizedBox(width: 100,),
-//                                         Image.asset("assets/edit.png",scale: 20,),
-//                                         SizedBox(width: 8,),
-//                                         Image.asset("assets/delete.png",scale: 20,),
-
-//                                       ],
-//                                     ),
