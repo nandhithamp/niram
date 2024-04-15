@@ -133,6 +133,13 @@ Widget RegisterField(double hgt,double width,String name,TextEditingController c
           hintText: name,
           hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
           border: InputBorder.none),
+        validator: (value) {
+          if (value!.trim().isEmpty) {
+            return "Enter "+name;
+          } else {
+            return null;
+          }
+        }
     ),
   );
 }

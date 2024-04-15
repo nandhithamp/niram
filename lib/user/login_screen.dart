@@ -265,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               const snackBar = SnackBar(
                                   backgroundColor: Colors.red,
                                   duration: Duration(milliseconds: 3000),
-                                  content: Text("No user Found!",
+                                  content: Text("No user Found Please Register!",
                                     textAlign: TextAlign.center,
                                     softWrap: true,
                                     style: TextStyle(

@@ -500,7 +500,7 @@ class MainProvider extends ChangeNotifier {
 
     HashMap<String, Object> users = HashMap();
     users["Name"] = NameController.text;
-    users["Phone_Number"]=PhoneNumberController.text;
+    users["Phone_Number"]='+91'+PhoneNumberController.text;
     users["TYPE"]="USER";
     users["ID"]=id;
 
