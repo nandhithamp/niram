@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-
-   const HomeScreen({super.key});
+  String name,phone,photo;
+    HomeScreen({super.key,required this.name,required this.photo,required this.phone });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 LinearGradient(colors: [Color(0xff088090), Color(0xff7EB5AB)])
                     .createShader(bounds),
             child: Text(
-              "Welcome Zahr_sha,",
+              "Welcome "+widget.name+',',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -71,8 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CircleAvatar(
                       radius: 31,
                       backgroundColor: Colors.teal.shade200,
-                      child: CircleAvatar(
+                      child:widget.photo==''&&widget.photo=='null'?
+                      CircleAvatar(
                         backgroundImage: AssetImage("assets/profilepic.jpg"),
+                        radius: 30,
+                      ):   CircleAvatar(
+                        backgroundImage: NetworkImage(widget.photo),
                         radius: 30,
                       ),
                     ),

@@ -657,7 +657,8 @@ class MainProvider extends ChangeNotifier {
 
       clearCarousel();
       notifyListeners();
-      callNext(context, AdminHome());
+      finish(context);
+      // callNext(context, AdminHome(userName: '',phoneNumber: '',));
     }
 
 
@@ -798,7 +799,8 @@ class MainProvider extends ChangeNotifier {
 
     clearUploadWork();
     notifyListeners();
-    callNext(context, AdminHome());
+    finish(context);
+    // callNext(context, AdminHome());
   }
   Future getImgwork1gallery() async {
     final imagePicker = ImagePicker();

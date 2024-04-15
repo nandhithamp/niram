@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +21,8 @@ import 'category_screen.dart';
 import 'jury members_screen.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({super.key});
+  String userName,phoneNumber,photo;
+   AdminHome({super.key,required this.userName,required this.phoneNumber,required this.photo});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class AdminHome extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, left: 20),
                     child: Text(
-                      "Welcome Hari,",
+                      "Welcome "+userName,
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'alef',
@@ -148,6 +150,8 @@ class AdminHome extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+                    FirebaseAuth auth = FirebaseAuth.instance;
+                    auth.signOut();
                     callNextReplacement(context, LoginScreen());
                   },
                   child: Center(
@@ -195,7 +199,8 @@ class AdminHome extends StatelessWidget {
                 backgroundColor: Color(0xff047E8F),
                 child: CircleAvatar(
                   radius: 45,
-                  backgroundImage: AssetImage("assets/profilepic.jpg"),
+                  backgroundImage:photo==''||photo=='null'?
+                  AssetImage("assets/profilepic.jpg"):NetworkImage(photo,) as ImageProvider,
                 ),
               ),
             )

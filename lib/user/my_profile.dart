@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:niram/constants/call_functions.dart';
 import 'package:niram/user/edit_profile.dart';
@@ -134,6 +135,8 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                   IconButton(
                                     onPressed: () {
+                                      FirebaseAuth auth = FirebaseAuth.instance;
+                                      auth.signOut();
                                       callNextReplacement(context, LoginScreen());
                                     },
                                     icon: Icon(
