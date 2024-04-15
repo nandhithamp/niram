@@ -139,6 +139,8 @@ class AdminHome extends StatelessWidget {
                   builder: (context,value,child) {
                     return InkWell(
                       onTap: () {
+                        MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+                        mainprovider.fetchAllParticipats();
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants()));
                       },
                       child: adminhomebtn(

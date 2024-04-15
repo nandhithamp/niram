@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:niram/constants/call_functions.dart';
 
 import '../admin/admin_home.dart';
+import '../models/ParticipatesModel.dart';
 import '../models/category_model.dart';
 import '../user/upload_screen.dart';
 
@@ -549,6 +550,7 @@ class MainProvider extends ChangeNotifier {
         if(int.parse(map['Age'].toString())<=int.parse(extractNumber(age).toString())){
           imagefileList.clear();
           notifyListeners();
+          offLoader();
           callNext(context, UploadScreen(Contest_id: id,customerID:customerID ,categoryID: categoryID,
           customerName: customerName,customerPhone: customerPhone,category: category,));
         }else{
@@ -815,54 +817,97 @@ class MainProvider extends ChangeNotifier {
   }
   Future<void> UploadWork(BuildContext context, String contest_id,
       String category,String customerPhone,String customerID,String customerName,String categoryID) async {
+    if(imagefileList.length>0) {
+      String id = DateTime
+          .now()
+          .microsecondsSinceEpoch
+          .toString();
+      HashMap<String, Object> participant_map = HashMap();
+      HashMap<String, Object> work_map = HashMap();
+      int i = 1;
 
-    String id = DateTime.now().microsecondsSinceEpoch.toString();
-    HashMap<String, Object> participant_map = HashMap();
-    HashMap<String, Object> work_map = HashMap();
-    int i=1;
-
-    List<String> list=[];
-    if(imagefileList.length>0){
-      for (int i = 0; i < imagefileList.length; i++) {
-        String time = DateTime.now().millisecondsSinceEpoch.toString();
-        ref = FirebaseStorage.instance.ref().child('Images').child(time); // Specify the full path including the filename
-        await ref.putFile(imagefileList[i]).whenComplete(() async {
-          await ref.getDownloadURL().then((value1) {
-            list.add(value1);
-            print(list.toString()+' KMVKNVKFNV');
-            work_map["IMAGELIST"] = list;
-            notifyListeners();
+      List<String> list = [];
+      if (imagefileList.length > 0) {
+        for (int i = 0; i < imagefileList.length; i++) {
+          String time = DateTime
+              .now()
+              .millisecondsSinceEpoch
+              .toString();
+          ref = FirebaseStorage.instance.ref().child('Images').child(
+              time); // Specify the full path including the filename
+          await ref.putFile(imagefileList[i]).whenComplete(() async {
+            await ref.getDownloadURL().then((value1) {
+              list.add(value1);
+              print(list.toString() + ' KMVKNVKFNV');
+              participant_map["IMAGELIST"] = list;
+              notifyListeners();
+            });
           });
-        });
+        }
       }
+      participant_map["CUSTOMER_ID"] = customerID;
+      participant_map["CUSTOMER_NAME"] = customerName;
+      participant_map["CUSTOMER_PHONE"] = customerPhone;
+      participant_map["CATEGORY"] = category;
+      participant_map["CATEGORY_ID"] = categoryID;
 
+
+      print(participant_map.toString() + ' IFRJF iFRRF');
+      db.collection("PARTICIPANT").doc(id).set(participant_map);
+
+      clearUploadWork();
+      notifyListeners();
+      offLoader();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(
+        backgroundColor: Colors.green,
+        content: Center(
+          child: Text(
+              "Uploaded Successfully", style: TextStyle(
+            color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800,)),
+        ),
+        duration:
+        Duration(milliseconds: 3000),
+      ));
+      finish(context);
+    }else{
+      offLoader();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Center(
+          child: Text(
+              "Please Upload at least one photo", style: TextStyle(
+            color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800,)),
+        ),
+        duration:
+        Duration(milliseconds: 3000),
+      ));
     }
-    participant_map["work"] = work_map;
-    participant_map["CUSTOMER_ID"] = customerID;
-    participant_map["CUSTOMER_NAME"] = customerName;
-    participant_map["CUSTOMER_PHONE"] = customerPhone;
-    participant_map["CATEGORY"] = category;
-    participant_map["CATEGORY_ID"] = categoryID;
-
-
-    print(participant_map.toString()+' IFRJF iFRRF');
-    db.collection("PARTICIPANT").doc(id).set(participant_map);
-
-    clearUploadWork();
-    notifyListeners();
-    offLoader();
-    ScaffoldMessenger.of(context)
-        .showSnackBar( SnackBar(
-      backgroundColor: Colors.green,
-      content: Center(
-        child: Text(
-            "Uploaded Successfully",style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w800,)),
-      ),
-      duration:
-      Duration(milliseconds: 3000),
-    ));
-    finish(context);
     // callNext(context, AdminHome());
+  }
+
+  List<ParticipatesModel> ParticipatesList=[];
+  void fetchAllParticipats(){
+    ParticipatesList.clear();
+    db.collection('PARTICIPANT').get().then((value){
+      if(value.docs.isNotEmpty){
+        for(var elements in value.docs){
+          Map<dynamic,dynamic> map=elements.data() as Map;
+          List<dynamic> list=[''];
+          print((map['IMAGELIST'].toString()+' OFIRNFR'));
+          if(map['IMAGELIST']!=null){
+            list=map['IMAGELIST'];
+            print(' JFNDIRF FRI FR');
+          }
+          ParticipatesList.add(ParticipatesModel(elements.id,
+              map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
+              map['CUSTOMER_PHONE'].toString(), map['CUSTOMER_ID'].toString(), list));
+          notifyListeners();
+        }
+      }
+    });
+
   }
 
 

@@ -108,6 +108,7 @@ class LoginProvider extends ChangeNotifier {
           Map<dynamic,dynamic> map = element.data();
           String adminName=map['Name'].toString();
           String id=element.id;
+          print(element.id+' JORMFRF');
           String phone=map['Phone_Number'].toString();
           if(map['TYPE'].toString()=='ADMIN') {
             FocusScope.of(context).unfocus();
