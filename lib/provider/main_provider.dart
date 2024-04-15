@@ -892,8 +892,10 @@ class MainProvider extends ChangeNotifier {
   List<CategorySelectionModel> categoriesSelectionList=[];
   void fetchAllParticipats(){
     ParticipatesList.clear();
+    filterParticipatesList.clear();
     db.collection('PARTICIPANT').get().then((value){
       if(value.docs.isNotEmpty){
+        filterParticipatesList.clear();
         for(var elements in value.docs){
           Map<dynamic,dynamic> map=elements.data() as Map;
           List<dynamic> list=[''];
@@ -902,11 +904,11 @@ class MainProvider extends ChangeNotifier {
             list=map['IMAGELIST'];
             print(' JFNDIRF FRI FR');
           }
-          categoriesSelectionList.add(CategorySelectionModel(map['CUSTOMER_ID'].toString(),
-              map['CUSTOMER_NAME'].toString(), false));
+          categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+              map['CATEGORY'].toString(), false));
           ParticipatesList.add(ParticipatesModel(elements.id,
               map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
-              map['CUSTOMER_PHONE'].toString(), map['CUSTOMER_ID'].toString(), list,false));
+              map['CUSTOMER_PHONE'].toString(), map['CATEGORY_ID'].toString(), list,false));
         }
         filterParticipatesList=ParticipatesList;
         categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
@@ -917,6 +919,9 @@ class MainProvider extends ChangeNotifier {
   }
 
   void filterFun(int index,String name,String catID){
+    print(filterParticipatesList.length.toString()+'  '+ParticipatesList.length.toString()+' IFRF IRO FR F'+catID);
+    filterParticipatesList=ParticipatesList.where((element) => element.categoryID==catID).toSet().toList();
+    notifyListeners();
     if(categoriesSelectionList[index].selectionBool){
       categoriesSelectionList[index].selectionBool=false;
     }else{
@@ -927,7 +932,10 @@ class MainProvider extends ChangeNotifier {
       ee.selectionBool=false;
     }
     }
-    filterParticipatesList=ParticipatesList.where((element) => element.categoryID==catID).toSet().toList();
+    for(var rr in ParticipatesList){
+      print(rr.categoryID+' IFRNFR '+catID);
+    }
+
     notifyListeners();
   }
 

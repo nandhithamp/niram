@@ -69,7 +69,7 @@ class _ParticipantsState extends State<Participants> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: ScrollPhysics(),
                     itemCount:
                    value. categoriesSelectionList
                             .length,
@@ -105,6 +105,7 @@ class _ParticipantsState extends State<Participants> {
               height: 10,
             ),
             Consumer<MainProvider>(builder: (context, value, child) {
+              print(value.filterParticipatesList.length.toString()+' IROFFR IOR F');
               return SizedBox(
                 child: ListView.builder(
                     shrinkWrap: true,
