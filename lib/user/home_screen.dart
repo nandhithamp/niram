@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Stack(children: [
                   GestureDetector(
                     onTap: (){
-                      callNext(context, MyProfile());
+                      callNext(context, MyProfile(name: widget.name,phone: widget.phone,photo: widget.photo,));
                     },
                     child: CircleAvatar(
                       radius: 31,

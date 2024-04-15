@@ -4,14 +4,10 @@ import 'package:niram/constants/call_functions.dart';
 import 'package:niram/user/edit_profile.dart';
 import 'package:niram/user/login_screen.dart';
 
-class MyProfile extends StatefulWidget {
-  const MyProfile({super.key});
+class MyProfile extends StatelessWidget {
+  String name,phone,photo;
+   MyProfile({super.key,required this.name,required this.phone,required this.photo});
 
-  @override
-  State<MyProfile> createState() => _MyProfileState();
-}
-
-class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -49,19 +45,20 @@ class _MyProfileState extends State<MyProfile> {
                       radius: 41,
                       backgroundColor: Colors.teal.shade200,
                       child:  CircleAvatar(
-                        backgroundImage: AssetImage("assets/profilepic.jpg"),
+                        backgroundImage:photo==''&&photo=='null'?
+                        AssetImage("assets/profilepic.jpg"):NetworkImage(photo) as ImageProvider,
                         radius: 40,
                       ),
                     ),
                      Text(
-                      "Zahr_sha",
+                      name,
                       style: TextStyle(
 
                           fontSize: 24,
                           fontWeight: FontWeight.w600),
                     ),
                      Text(
-                      "9012345678",
+                      phone,
                       style: TextStyle(
 
                           fontSize: 20,
