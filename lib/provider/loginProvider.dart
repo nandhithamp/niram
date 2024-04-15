@@ -12,6 +12,7 @@ import 'package:niram/constants/call_functions.dart';
 import 'package:niram/user/home_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../admin/participants_screen.dart';
 import '../user/otp_screen.dart';
 import 'main_provider.dart';
 
@@ -120,8 +121,8 @@ class LoginProvider extends ChangeNotifier {
             callNextReplacement(context, HomeScreen(phone: phone,name: adminName,photo:  map['PHOTO']??"",id: id,));
           }else if(map['TYPE'].toString()=='JURY'){
             MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
-            mainprovider.getCarousel();
-            callNextReplacement(context, JuryMembers());
+            mainprovider.fetchAllParticipats();
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants()));
           }else{
             const snackBar = SnackBar(
               content: Center(child: Text('Invalid User',style: TextStyle(color: Colors.white),)),
