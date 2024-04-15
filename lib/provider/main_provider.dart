@@ -461,7 +461,7 @@ class MainProvider extends ChangeNotifier {
    HashMap<String,Object>map=HashMap();
    String key=DateTime.now().millisecondsSinceEpoch.toString();
    map['Name']=NameController.text;
-   map['Phone_Number']=PhoneNumberController.text;
+   map['Phone_Number']='+91'+PhoneNumberController.text;
    map['TYPE']='JURY';
    map['ID']=key;
    if (addAdminImg != null) {

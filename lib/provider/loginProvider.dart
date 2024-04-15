@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:niram/admin/admin_home.dart';
+import 'package:niram/admin/jury%20members_screen.dart';
 import 'package:niram/constants/call_functions.dart';
 import 'package:niram/user/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -117,6 +118,10 @@ class LoginProvider extends ChangeNotifier {
             MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
             mainprovider.getCarousel();
             callNextReplacement(context, HomeScreen(phone: phone,name: adminName,photo:  map['PHOTO']??"",id: id,));
+          }else if(map['TYPE'].toString()=='JURY'){
+            MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+            mainprovider.getCarousel();
+            callNextReplacement(context, JuryMembers());
           }else{
             const snackBar = SnackBar(
               content: Center(child: Text('Invalid User',style: TextStyle(color: Colors.white),)),
