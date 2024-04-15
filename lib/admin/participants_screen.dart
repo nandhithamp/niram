@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 import '../constants/mycolors.dart';
 
 class Participants extends StatefulWidget {
-  Participants({super.key});
+  String from;
+  Participants({super.key,required this.from});
 
   @override
   State<Participants> createState() => _ParticipantsState();
@@ -37,6 +38,7 @@ class _ParticipantsState extends State<Participants> {
         child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading:widget.from=='ADMIN'?Icon(Icons.arrow_back_ios):SizedBox(),
         iconTheme: IconThemeData(
           color: Color(0xff0C8290),
           size: 25,
@@ -120,7 +122,9 @@ class _ParticipantsState extends State<Participants> {
                       makeShortListAlert(context,item.id);
 
                     }else{
-                      winnerAlert(context,item.id);
+    if(item.winnerStatus!='YES') {
+      winnerAlert(context, item.id);
+    }
                     }
                         },
                           onTap: (){

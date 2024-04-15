@@ -150,7 +150,7 @@ class AdminHome extends StatelessWidget {
                       onTap: () {
                         MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
                         mainprovider.fetchAllParticipats();
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants(from: 'ADMIN',)));
                       },
                       child: adminhomebtn(
                         "assets/quiz.jpg",

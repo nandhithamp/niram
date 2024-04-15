@@ -122,7 +122,7 @@ class LoginProvider extends ChangeNotifier {
           }else if(map['TYPE'].toString()=='JURY'){
             MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
             mainprovider.fetchAllParticipats();
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants(from: 'JURY',)));
           }else{
             const snackBar = SnackBar(
               content: Center(child: Text('Invalid User',style: TextStyle(color: Colors.white),)),
