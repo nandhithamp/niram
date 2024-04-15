@@ -489,6 +489,23 @@ class MainProvider extends ChangeNotifier {
    ));
    finish(context);
  }
+ 
+ void makeShortList(String id,BuildContext context){
+   HashMap<String, Object> map = HashMap();
+   map['SHORT_LIST_STATUS']='YES';
+   db.collection('PARTICIPANT').doc(id).set(map,SetOptions(merge: true));
+   ScaffoldMessenger.of(context)
+       .showSnackBar( SnackBar(
+     backgroundColor: Colors.green,
+     content: Center(
+       child: Text(
+           "Successfuly short Listed",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
+     ),
+     duration:
+     Duration(milliseconds: 3000),
+   ));
+   finish(context);
+ }
  void editAdmins(String id){
    db.collection("ADMINS").doc(id).get().then((value){
      Map<dynamic, dynamic> map = value.data()as Map;
@@ -939,7 +956,7 @@ class MainProvider extends ChangeNotifier {
               map['CATEGORY'].toString(), false));
           ParticipatesList.add(ParticipatesModel(elements.id,
               map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
-              map['CUSTOMER_PHONE'].toString(), map['CATEGORY_ID'].toString(), list,false));
+              map['CUSTOMER_PHONE'].toString(), map['CATEGORY_ID'].toString(), list,false,map['SHORT_LIST_STATUS']??""));
         }
         filterParticipatesList=ParticipatesList;
         categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
