@@ -57,6 +57,13 @@ class _ParticipantsState extends State<Participants> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Text('Categories'),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Consumer<MainProvider>(builder: (context, value, child) {
                 return Container(height: 50,
                   child: ListView.builder(
@@ -76,13 +83,16 @@ class _ParticipantsState extends State<Participants> {
                         },
                           child: Container(
                             height: 50,
-                            width: 100,
+                            // width: 100,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: item.selectionBool?blueDark:
                               Color(0xff0C8290),
                             ),
-                            child: Center(child: Text(item.catName,style: TextStyle(color: Colors.white),)),
+                            child: Center(child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(item.catName,style: TextStyle(color: Colors.white),),
+                            )),
                           ),
                         ),
                       );
