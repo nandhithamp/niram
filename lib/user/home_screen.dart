@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  String name,phone,photo;
-    HomeScreen({super.key,required this.name,required this.photo,required this.phone });
+  String name,phone,photo,id;
+    HomeScreen({super.key,required this.name,required this.photo,required this.phone ,required this.id });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return GestureDetector(
                       onTap: (){
                         value.getContest();
-                        callNext(context, ContestScreen());
+                        callNext(context, ContestScreen(customerID: widget.id,));
                       },
                       child: Container(
                         height: 63,

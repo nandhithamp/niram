@@ -13,6 +13,7 @@ import 'package:niram/constants/call_functions.dart';
 
 import '../admin/admin_home.dart';
 import '../models/category_model.dart';
+import '../user/upload_screen.dart';
 
 
 class MainProvider extends ChangeNotifier {
@@ -528,6 +529,38 @@ class MainProvider extends ChangeNotifier {
     // getAdmins();
     notifyListeners();
 
+  }
+  int? extractNumber(String text) {
+    RegExp regExp = RegExp(r'\d+');
+    var match = regExp.firstMatch(text);
+    if (match != null) {
+      return int.parse(match.group(0)!);  // Convert the found digits to an integer
+    }
+    return null;  // Return null if no numbers are found
+  }
+  void checkCustomerAge(String id,String age,BuildContext context){
+    print(id+' IIDE iHE');
+    db.collection('CUSTOMER').doc(id).get().then((value){
+      if(value.exists){
+        Map<dynamic,dynamic> map=value.data() as Map;
+        print(map['Age'].toString()+' IRUFNRF iRF');
+        print(age+' EWEDEW iRF');
+        if(int.parse(map['Age'].toString())<=int.parse(extractNumber(age).toString())){
+          callNext(context, UploadScreen(Contest_id: id,));
+        }else{
+          ScaffoldMessenger.of(context)
+              .showSnackBar( SnackBar(
+            backgroundColor: Colors.red,
+            content: Center(
+              child: Text(
+                  "Your are Not eligible for this contest",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
+            ),
+            duration:
+            Duration(milliseconds: 3000),
+          ));
+        }
+      }
+    });
   }
   Future UsersgetImagegallery() async {
     final imagePicker = ImagePicker();

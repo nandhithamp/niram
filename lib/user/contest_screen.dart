@@ -10,7 +10,8 @@ import '../constants/refactoring.dart';
 import 'contestdetial_screen.dart';
 
 class ContestScreen extends StatelessWidget {
-  const ContestScreen({super.key});
+  String customerID;
+  ContestScreen({super.key,required this.customerID});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class ContestScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: (){
-                              callNext(context, ContestDetials(id: value.contestList[index].id, photo: value.contestList[index].photo,
+                              callNext(context, ContestDetials(id: value.contestList[index].id, photo: value.contestList[index].photo,customerID: customerID,
                                 category: value.contestList[index].category, categoryid: value.contestList[index].categoryid,
                                 contest_theme:value.contestList[index].contest_theme,age: value.contestList[index].age,
                                 registation_fee: value.contestList[index].registation_fee, status: value.contestList[index].status,

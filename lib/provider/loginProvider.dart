@@ -115,7 +115,7 @@ class LoginProvider extends ChangeNotifier {
           }else if(map['TYPE'].toString()=='USER'){
             MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
             mainprovider.getCarousel();
-            callNextReplacement(context, HomeScreen(phone: phone,name: adminName,photo:  map['PHOTO']??"",));
+            callNextReplacement(context, HomeScreen(phone: phone,name: adminName,photo:  map['PHOTO']??"",id: id,));
           }else{
             const snackBar = SnackBar(
               content: Center(child: Text('Invalid User',style: TextStyle(color: Colors.white),)),
