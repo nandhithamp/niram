@@ -303,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           :Container( width: width*0.35,
                         height: 50,
                         // width: 340,
-                        margin: const EdgeInsets.symmetric(horizontal: 18,vertical: 30),
+                        margin: const EdgeInsets.symmetric(horizontal: 18,vertical: 20),
                         decoration:  const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(18)),
                             gradient: LinearGradient(
@@ -326,6 +326,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                  ),
+                  InkWell(onTap: (){
+                    callNext(context, RegisterScreen());
+                  },
+                    child: Text('New User Registration',style: TextStyle(
+                      decoration: TextDecoration.underline,color: Colors.blue
+                    ),),
                   ),
                   SizedBox(height: height*0.08,),
 
