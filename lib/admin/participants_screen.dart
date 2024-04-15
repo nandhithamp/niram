@@ -144,7 +144,13 @@ class _ParticipantsState extends State<Participants> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    item.shortListStatus=="YES"?
+                                    item.winnerStatus=="YES"?
+                                    Row(
+                                      children: [
+                                        Text('Winner'),
+                                        Icon(Icons.wind_power,color: Colors.green,)
+                                      ],
+                                    ):item.shortListStatus=="YES"?
                                     Row(
                                       children: [
                                         Text('Short Listed'),
@@ -451,7 +457,7 @@ class _ParticipantsState extends State<Participants> {
                                   onPressed: () {
                                     MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
 
-                                    mainprovider.makeShortList(id,context);
+                                    mainprovider.winnerAssign(id,context);
                                   },
                                   child: const Text(
                                     'Winner',

@@ -961,7 +961,7 @@ class MainProvider extends ChangeNotifier {
   void fetchAllParticipats(){
     ParticipatesList.clear();
     filterParticipatesList.clear();
-    db.collection('PARTICIPANT').get().then((value){
+    db.collection('PARTICIPANT').snapshots().listen((value){
       if(value.docs.isNotEmpty){
         filterParticipatesList.clear();
         for(var elements in value.docs){
