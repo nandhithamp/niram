@@ -116,8 +116,18 @@ class _ParticipantsState extends State<Participants> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: InkWell(onLongPress: (){
-                          makeShortListAlert(context,item.id);
+                    if(item.shortListStatus!='YES'){
+                      makeShortListAlert(context,item.id);
+
+                    }else{
+                      winnerAlert(context,item.id);
+                    }
                         },
+                          onTap: (){
+                          if(item.shortListStatus=='YES'){
+                            winnerAlert(context,item.id);
+                          }
+                          },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -321,6 +331,130 @@ class _ParticipantsState extends State<Participants> {
                                   },
                                   child: const Text(
                                     'Submit',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )),
+                            ),
+
+                          ],
+                        );
+                      }
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+ winnerAlert(context,String id)  {
+    return  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(26),
+            ),
+            content: Container(
+              width: 401,
+              height: 213,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(28),
+
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  SizedBox(height: 20,),
+
+                  const Text(
+                    "Confirm to Make as Winner",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                      height: 1.56,
+                    ),
+                  ),
+
+                  const SizedBox(height: 35),
+
+                  Consumer<MainProvider>(
+                      builder: (context,valuee1,child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 39,
+                              width: 110,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      overlayColor: MaterialStateProperty.all(Colors.transparent), // Remove overlay color
+                                      shadowColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.5)), // Set shadow color
+                                      // Define the shadow properties
+                                      elevation: MaterialStateProperty.all(5), //
+                                      textStyle: MaterialStateProperty.all(
+                                          const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w900)),
+                                      backgroundColor: MaterialStateProperty.all(
+                                          Colors.white),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(60)))),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+
+                                  },
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color:Color(0xff1746A2),
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(width: 12,),
+                            SizedBox(
+                              height: 39,
+                              width: 110,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      overlayColor: MaterialStateProperty.all(Colors.transparent), // Remove overlay color
+                                      shadowColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.5)), // Set shadow color
+                                      // Define the shadow properties
+                                      elevation: MaterialStateProperty.all(5), //
+                                      textStyle: MaterialStateProperty.all(
+                                          const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w900)),
+                                      backgroundColor: MaterialStateProperty.all(
+                                          Colors.pink),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(60)))),
+                                  onPressed: () {
+                                    MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+
+                                    mainprovider.makeShortList(id,context);
+                                  },
+                                  child: const Text(
+                                    'Winner',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,

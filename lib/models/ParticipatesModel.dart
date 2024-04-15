@@ -7,8 +7,9 @@ class ParticipatesModel{
   List<dynamic> list;
   bool selectionBool;
   String shortListStatus;
+  String winnerStatus;
   ParticipatesModel(this.id,this.customer,this.category,
-      this.customerPhone,this.categoryID,this.list,this.selectionBool,this.shortListStatus);
+      this.customerPhone,this.categoryID,this.list,this.selectionBool,this.shortListStatus,this.winnerStatus);
 }
 
 class CategorySelectionModel{
