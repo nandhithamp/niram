@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:niram/admin/add_jury_screen.dart';
 import 'package:niram/admin/participants_screen.dart';
 import 'package:niram/admin/quiz_screen.dart';
 import 'package:niram/admin/users_screen.dart';
@@ -106,9 +107,17 @@ class AdminHome extends StatelessWidget {
                     );
                   }
                 ),
-                adminhomebtn(
-                  "assets/jury.png",
-                  "Jury",
+                InkWell(onTap: (){
+                  MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+                  mainprovider.addAdminImg=null;
+                  mainprovider.NameController.clear();
+                  mainprovider.PhoneNumberController.clear();
+                  callNext(context, AdminAddJury());
+                },
+                  child: adminhomebtn(
+                    "assets/jury.png",
+                    "Jury",
+                  ),
                 ),
 
                 Consumer<MainProvider>(

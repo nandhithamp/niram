@@ -268,7 +268,6 @@ class Admins extends StatelessWidget {
                                               builder: (context,value,child) {
                                                 return InkWell(onTap: () {
                                                   value.editAdmins(value.adminsList[index].id.toString());
-
                                                 },
                                                   child: Image.asset(
                                                     "assets/edit.png",

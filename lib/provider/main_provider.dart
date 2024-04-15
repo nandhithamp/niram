@@ -457,6 +457,38 @@ class MainProvider extends ChangeNotifier {
    });
    notifyListeners();
  }
+ Future<void> addJoury(BuildContext context) async {
+   HashMap<String,Object>map=HashMap();
+   String key=DateTime.now().millisecondsSinceEpoch.toString();
+   map['Name']=NameController.text;
+   map['Phone_Number']=PhoneNumberController.text;
+   map['TYPE']='JURY';
+   map['ID']=key;
+   if (addAdminImg != null) {
+     String photoId = DateTime.now().millisecondsSinceEpoch.toString();
+     ref = FirebaseStorage.instance.ref().child(photoId);
+     await ref.putFile(addAdminImg!).whenComplete(() async {
+       await ref.getDownloadURL().then((value) {
+         map["PHOTO"] = value;
+
+         notifyListeners();
+       });
+       notifyListeners();
+     });
+   } else {
+     map['PHOTO'] = '';
+   }
+   db.collection('USERS').doc(key).set(map,SetOptions(merge: true));
+   ScaffoldMessenger.of(context)
+       .showSnackBar( SnackBar(
+     backgroundColor: Colors.white,
+     content: Text(
+         "Added Successfuly",style: TextStyle(color: Colors.blue,fontSize: 14,fontWeight: FontWeight.w800,)),
+     duration:
+     Duration(milliseconds: 3000),
+   ));
+   finish(context);
+ }
  void editAdmins(String id){
    db.collection("ADMINS").doc(id).get().then((value){
      Map<dynamic, dynamic> map = value.data()as Map;
@@ -899,7 +931,6 @@ class MainProvider extends ChangeNotifier {
         for(var elements in value.docs){
           Map<dynamic,dynamic> map=elements.data() as Map;
           List<dynamic> list=[''];
-          print((map['IMAGELIST'].toString()+' OFIRNFR'));
           if(map['IMAGELIST']!=null){
             list=map['IMAGELIST'];
             print(' JFNDIRF FRI FR');
