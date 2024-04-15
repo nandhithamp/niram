@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:niram/provider/main_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/call_functions.dart';
 
@@ -18,14 +20,14 @@ class Categories extends StatelessWidget {
       colors: <Color>[Color(0xff0C8290), Color(0xffBFAB78)],
     ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
     List<String> texts = [
-      "Pencil Drawing",
-      "Oil Painting",
-      "Digital Painting",
-      "Water Coloring",
-      "Photography",
-      "Videography",
-      "Poem Writing",
-      "Story Writing"
+      // "Pencil Drawing",
+      // "Oil Painting",
+      // "Digital Painting",
+      // "Water Coloring",
+      // "Photography",
+      // "Videography",
+      // "Poem Writing",
+      // "Story Writing"
     ];
 
     return SafeArea(
@@ -82,20 +84,26 @@ class Categories extends StatelessWidget {
                                     child: Column(
                                       children: [
 
-                                        TextFormField(
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(15),
-                                              ),
-                                              hintText: "Category Name",
-                                              hintStyle: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontFamily: "amikosemi",
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold)),
+                                        Consumer<MainProvider>(
+                                          builder: (context,value,child) {
+                                            return TextFormField(
+                                              controller: value.CategorynameController,
+
+                                              keyboardType: TextInputType.text,
+                                              decoration: InputDecoration(
+                                                  fillColor: Colors.white,
+                                                  filled: true,
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                  ),
+                                                  hintText: "Category Name",
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontFamily: "amikosemi",
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold)),
+                                            );
+                                          }
                                         ),
 
                                       ],
@@ -104,35 +112,40 @@ class Categories extends StatelessWidget {
 
                                   ),
 
-                                  Center(
-                                    child: TextButton(
-                                      onPressed: () {
-                                        back(context);
-                                      },
-                                      child: Container(
-                                        height: height / 12,
-                                        width: width / 2.5,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(30),
-                                            gradient: const LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Color(0xff248C96),
-                                                Color(0xffA7CCC4),
-                                              ],
-                                            )),
-                                        child: Center(
-                                            child: Text(
-                                              "Add",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: "amikosemi",
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                      ),
-                                    ),
+                                  Consumer<MainProvider>(
+                                    builder: (context,value,child) {
+                                      return Center(
+                                        child: TextButton(
+                                          onPressed: () {
+                                            value.addCategory();
+                                            back(context);
+                                          },
+                                          child: Container(
+                                            height: height / 12,
+                                            width: width / 2.5,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(30),
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Color(0xff248C96),
+                                                    Color(0xffA7CCC4),
+                                                  ],
+                                                )),
+                                            child: Center(
+                                                child: Text(
+                                                  "Add",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: "amikosemi",
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold),
+                                                )),
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   )
                                 ]),
                           ),
@@ -178,33 +191,39 @@ class Categories extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: texts.length,
-                        itemBuilder: ((context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, bottom: 5),
-                            child: Container(
-                              height: 57,
-                              width: 364,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(0xff047E8F)),
-                              child: Center(
-                                  child: Text(
-                                    texts[index],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "amikosemi",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
-                                  )),
-                            ),
-                          );
-                        })),
+                  Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return SizedBox(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: value.categoryList.length,
+
+                            itemBuilder: ((context, index) {
+
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 5),
+                                child: Container(
+                                  height: 57,
+                                  width: 364,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xff047E8F)),
+                                  child: Center(
+                                      child: Text(
+                                        value.categoryList[index].categoryname.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: "amikosemi",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24),
+                                      )),
+                                ),
+                              );
+                            })),
+                      );
+                    }
                   ),
                 ],
               ),

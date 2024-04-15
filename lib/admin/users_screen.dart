@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:niram/provider/main_provider.dart';
+import 'package:provider/provider.dart';
 
 class Users extends StatelessWidget {
   const Users({super.key});
@@ -58,73 +60,78 @@ class Users extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: images.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Container(
-                            height: 131,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Color(0xff047E8F),
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(images[index]),
-                                    radius: 50,
-                                  ),
+                child: Consumer<MainProvider>(
+                  builder: (context,value,child) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: value.usersList.length,
+                        // itemCount: images.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Container(
+                                height: 131,
+                                width: 300,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Color(0xff047E8F),
                                 ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                child: Row(
                                   children: [
-                                    Text(
-                                      "name",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(value.usersList[index].users_photo),
+                                        radius: 50,
+                                      ),
                                     ),
-                                    Text(
-                                     "Destination",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          ),
+                                    SizedBox(
+                                      width: 30,
                                     ),
-                                    Text(
-                                      "phone",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                    Text(
-                                      "place",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(value.usersList[index].users_name.toString(),
+
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        Text(
+                                          value.usersList[index].users_age.toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        Text(
+                                          value.usersList[index].users_phone.toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                        Text(
+                                          value.usersList[index].users_place.toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              ),
+                                        )
+                                      ],
                                     )
                                   ],
-                                )
-                              ],
-                            )),
-                      );
-                    })),
+                                )),
+                          );
+                        });
+                  }
+                )),
           ],
         ),
       ),

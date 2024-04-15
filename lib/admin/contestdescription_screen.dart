@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:niram/provider/main_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/call_functions.dart';
 import '../constants/refactoring.dart';
 import 'add_contest.dart';
 
 class ContestDescriptions extends StatelessWidget {
-  const ContestDescriptions({super.key});
+  String id;
+  String photo;
+  String category;
+  String categoryid;
+  String contest_theme;
+  String age;
+  String registation_fee;
+  String status;
+  String winning_price;
+  String from_date;
+  String to_date;
+  String termsand_condition;
+
+   ContestDescriptions({super.key,required this.id,required this.photo,required this.category,
+    required this.categoryid,required this.contest_theme,required this.age,required this.registation_fee,
+    required this.status,required this.winning_price,required this.from_date,required this.to_date,
+    required this.termsand_condition});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +52,17 @@ class ContestDescriptions extends StatelessWidget {
             },
             //backgroundColor: Colors.blueGrey,
             backgroundColor: Colors.transparent,
-            child: Text("Edit",style: TextStyle(color: Colors.white,fontFamily: "amikosemi",fontSize: 20,fontWeight: FontWeight.bold),),
+            child:Consumer<MainProvider>(
+              builder: (context,value,child) {
+                return InkWell(onTap: () {
+                  print("fvmv"+id);
+                  value.editcontest(id);
+                  value.getContest();
+                  callNext(context, AddContests(from:"EDIT", oldid:id));
+                },
+                    child: Text("Edit",style: TextStyle(color: Colors.white,fontFamily: "amikosemi",fontSize: 20,fontWeight: FontWeight.bold),));
+              }
+            ),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15),
 
             ),
@@ -50,7 +78,7 @@ class ContestDescriptions extends StatelessWidget {
               width: width / 1,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/oil_painting.jpg"),
+                      image: NetworkImage(photo),
                       fit: BoxFit.cover)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,14 +89,14 @@ class ContestDescriptions extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Oil Painting",
+                          category,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "Theme: Travel ",
+                          "Theme:"+contest_theme,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -99,7 +127,7 @@ class ContestDescriptions extends StatelessWidget {
                                   fontWeight: FontWeight.normal),
                             ),
                             Text(
-                              "7000",
+                              winning_price,
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
@@ -140,7 +168,7 @@ class ContestDescriptions extends StatelessWidget {
                                     fontWeight: FontWeight.normal),
                               ),
                               Text(
-                                "15 - 20",
+                                age,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
@@ -173,7 +201,7 @@ class ContestDescriptions extends StatelessWidget {
                                     fontWeight: FontWeight.normal),
                               ),
                               Text(
-                                "25",
+                                registation_fee,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
@@ -207,7 +235,7 @@ class ContestDescriptions extends StatelessWidget {
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal),
                           ),
-                          Text("27-01-2024  -  10-02-2024",
+                          Text(from_date+" - "+to_date,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,
@@ -274,43 +302,44 @@ class ContestDescriptions extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  row(width / 35, width / 1.15,
-                    "Competitions must be completed within the stipulated time",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    "Draw only after you have fully understood the subject given to you.",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    "Try to draw the entire surface on the drawing surface",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    "Make sure there is no dust in the drawing.",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    "നിശ്ചിത സമയത്തിനുള്ളിൽ മത്സരങ്ങൾ പൂർത്തിയാക്കണം",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    "നിങ്ങൾക്കു തന്നിരിക്കുന്ന വിഷയം പൂർണമായും മനസ്സിലാക്കിയതിനു ശേഷം മാത്രം വരക്കുക",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    " വരക്കുന്ന പ്രതലത്തിൽ മുഴുവനായി വരയ്ക്കാൻ ശ്രമിക്കുക",),
-                  SizedBox(
-                    height: height / 50,
-                  ),
-                  row(width / 35, width / 1.15,
-                    "വരക്കുന്ന ചിത്രത്തിൽ പൊടിയോ മറ്റോ ആകാതിരിക്കാൻ ശ്രദ്ധിക്കുക.",),
+                  Text(termsand_condition),
+                  // row(width / 35, width / 1.15,
+                  //   "Competitions must be completed within the stipulated time",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   "Draw only after you have fully understood the subject given to you.",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   "Try to draw the entire surface on the drawing surface",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   "Make sure there is no dust in the drawing.",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   "നിശ്ചിത സമയത്തിനുള്ളിൽ മത്സരങ്ങൾ പൂർത്തിയാക്കണം",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   "നിങ്ങൾക്കു തന്നിരിക്കുന്ന വിഷയം പൂർണമായും മനസ്സിലാക്കിയതിനു ശേഷം മാത്രം വരക്കുക",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   " വരക്കുന്ന പ്രതലത്തിൽ മുഴുവനായി വരയ്ക്കാൻ ശ്രമിക്കുക",),
+                  // SizedBox(
+                  //   height: height / 50,
+                  // ),
+                  // row(width / 35, width / 1.15,
+                  //   "വരക്കുന്ന ചിത്രത്തിൽ പൊടിയോ മറ്റോ ആകാതിരിക്കാൻ ശ്രദ്ധിക്കുക.",),
                 ],
               ),
             ),

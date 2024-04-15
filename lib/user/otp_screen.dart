@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:niram/constants/call_functions.dart';
+import 'package:niram/provider/loginProvider.dart';
+import 'package:niram/provider/main_provider.dart';
 import 'package:niram/user/home_screen.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
+import '../admin/add_contest.dart';
 import '../admin/admin_home.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -11,6 +15,7 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MainProvider provider = Provider.of(context,listen: false);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
@@ -52,32 +57,36 @@ class OtpScreen extends StatelessWidget {
       
               ),
               SizedBox(height: height/15,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child:Pinput(
-                  length: 6,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  defaultPinTheme: PinTheme( decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    boxShadow: [BoxShadow(
-                      blurRadius: 1,
-                      offset: Offset(0, 1),
-                      color: Colors.grey.shade600
-                    )]
-                  ),
-                    textStyle: TextStyle(fontWeight: FontWeight.bold),
-                    height: 50,
-                    width: 50,
-      
-                  ),
-      
-                  onCompleted: (pin){
-      
-      
-                  },
-                ),
+              Consumer<LoginProvider>(
+                builder: (context,value,child) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child:Pinput(controller: value.otpverifycontroller,
+                      length: 6,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      defaultPinTheme: PinTheme( decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        boxShadow: [BoxShadow(
+                          blurRadius: 1,
+                          offset: Offset(0, 1),
+                          color: Colors.grey.shade600
+                        )]
+                      ),
+                        textStyle: TextStyle(fontWeight: FontWeight.bold),
+                        height: 50,
+                        width: 50,
+
+                      ),
+
+                      onCompleted: (pin){
+
+
+                      },
+                    ),
+                  );
+                }
               ),
               SizedBox(height:height/50 ,),
               Text("Resend OTP in: 30 sec",style: TextStyle(color: Colors.grey,fontSize: 15),),
@@ -85,6 +94,8 @@ class OtpScreen extends StatelessWidget {
               GestureDetector(
                 onTap: (){
                   callNextReplacement(context, AdminHome());
+                  // provider.getCarousel();
+                  // callNextReplacement(context, HomeScreen());
                 },
                 child: Container(
                   height: 57,

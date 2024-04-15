@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niram/constants/call_functions.dart';
+import 'package:niram/provider/main_provider.dart';
 import 'package:niram/user/shortlisted_screen.dart';
+import 'package:provider/provider.dart';
 import '../constants/refactoring.dart';
 import 'contestdetial_screen.dart';
 
@@ -80,87 +82,101 @@ class ContestScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  ListView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: (){
-                          callNext(context, ContestDetials());
-                        },
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(left: 10, right: 10, top: 15),
-                          child: Container(
-                            height: height / 4,
-                            width: width / 1.1,
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 3,
-                                      color: Colors.grey,
-                                      offset: Offset(0, 3))
-                                ],
-                                borderRadius: BorderRadius.circular(15),
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/oil_painting.jpg"),
-                                    fit: BoxFit.cover)),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: height / 100,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 10,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: width / 20,
-                                      ),
-                                      Text(
-                                        "Ongoing",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w800),
-                                      ),
+                  Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: value.contestList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: (){
+                              callNext(context, ContestDetials(id: value.contestList[index].id, photo: value.contestList[index].photo,
+                                category: value.contestList[index].category, categoryid: value.contestList[index].categoryid,
+                                contest_theme:value.contestList[index].contest_theme,age: value.contestList[index].age,
+                                registation_fee: value.contestList[index].registation_fee, status: value.contestList[index].status,
+                                winning_price:value.contestList[index].winning_price, from_date: value.contestList[index].from_date,
+                                to_date: value.contestList[index].to_date, termsand_condition: value.contestList[index].termsand_condition,));
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10, top: 15),
+                              child: Container(
+                                height: height / 4,
+                                width: width / 1.1,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 3,
+                                          color: Colors.grey,
+                                          offset: Offset(0, 3))
                                     ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height / 28,
-                                ),
-                                Text(
-                                  "Digital Painting",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: DecorationImage(
+                                        image: NetworkImage(value.contestList[index].photo),
+                                            // "assets/oil_painting.jpg"),
+                                        fit: BoxFit.cover)),
+                                child: Column(
                                   children: [
-                                    Text("Theme : ",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20)),
-                                    Text("Nature",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      height: height / 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 10,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: width / 20,
+                                          ),
+                                          Text(
+                                            // "Ongoing"
+                                           value.contestList[index].status ,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w800),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: height / 28,
+                                    ),
+                                    Text(
+                                      // "Digital Painting"
+                                      value.contestList[index].category,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                            "Theme : ",
+                                            style: TextStyle(
+                                                color: Colors.white, fontSize: 20)),
+                                        Text(
+                                            // "Nature"
+                                            value.contestList[index].contest_theme,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
-                    },
+                    }
                   )
                 ],
               ),

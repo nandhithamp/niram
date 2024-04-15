@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/provider/main_provider.dart';
 import 'package:niram/user/login_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/call_functions.dart';
 import '../constants/refactoring.dart';
@@ -53,59 +55,120 @@ class RegisterScreen extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
+
                     textGradient( "   Create Account \nto get started now!,"),
+                    Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return InkWell(
+                          onTap: () {
+                            showBottomSheet(context);
+                          },
+                          child: value.addUsersImg!=null?CircleAvatar(
+                              backgroundColor: Color(0xff249C99),
+                              radius: 40,
+
+                              child:Image.file(value.addUsersImg!,
+                              scale: 4,
+                              )
+                          ):value.UsersImg!=""?CircleAvatar(
+                              backgroundColor:Color(0xff249C99),
+                              radius: 40,
+                              child: Image.network(
+                                  value.UsersImg.toString()
+                              )): CircleAvatar(
+                              backgroundColor:Color(0xff249C99),
+                              radius: 40,
+                              child: Icon(
+                                Icons.add_photo_alternate_outlined,
+                                size: 35,
+                                color: Colors.white,
+                              )
+                              // Icon(
+                              //   Icons.add_photo_alternate_outlined,
+                              //   size: 35,
+                              //   color: Colors.white,)
+                          ),
+                        );
+                      }
+                    ),
+
+                    // SizedBox(height: 5,),
                     SizedBox(
                       height: height / 30,
                     ),
-                    RegisterField(height / 18, width / 1.15, "  Name"),
+                    Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return RegisterField(height / 18, width / 1.15, "  Name",value.NameController);
+                      }
+                    ),
                     SizedBox(
                       height: height / 80,
                     ),
-                    RegisterField1(height / 18, width / 1.15, "  Phone Number",10),
+                    Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return RegisterField1(height / 18, width / 1.15, "  Phone Number",10,value.PhoneNumberController);
+                      }
+                    ),
 
 
                     SizedBox(
                       height: height / 80,
                     ),
-                    RegisterField1(height / 18, width / 1.15, "  Age",2),
+                    Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return RegisterField1(height / 18, width / 1.15, "  Age",2,value.AgeController);
+                      }
+                    ),
                     SizedBox(
                       height: height / 80,
                     ),
-                    RegisterField(height / 18, width / 1.15, "  Place"),
+                    Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return RegisterField(height / 18, width / 1.15, "  Place",value.PlaceController);
+                      }
+                    ),
                     SizedBox(
                       height: height / 30,
                     ),
-                    GestureDetector(
-                      onTap: (){
-                        callNextReplacement(context, LoginScreen());
-                      },
-                      child: Container(
-                        height: 57,
-                        width: 147,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 2,
-                                  color: Colors.grey,
-                                  offset: Offset(0, 3)),
-                            ],
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color(0xff3D9698).withOpacity(0.5),
-                                  Color(0xff0996A9).withOpacity(0.6)
-                                ])),
-                        child: Center(
-                            child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ),
+                    Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return InkWell(
+                          onTap: (){
+                            value.addCustomers();
+                            back(context);
+
+                             // callNextReplacement(context, LoginScreen());
+                          },
+                          child: Container(
+                            height: 57,
+                            width: 147,
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      blurRadius: 2,
+                                      color: Colors.grey,
+                                      offset: Offset(0, 3)),
+                                ],
+                                borderRadius: BorderRadius.circular(30),
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xff3D9698).withOpacity(0.5),
+                                      Color(0xff0996A9).withOpacity(0.6)
+                                    ])),
+                            child: Center(
+                                child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            )
+                            ),
+                          ),
+                        );
+                      }
                     ),
                   ],
                 ),
@@ -135,5 +198,39 @@ class RegisterScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  void showBottomSheet(BuildContext context) {
+    MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+    showModalBottomSheet(
+        elevation: 10,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.0),
+              topRight: Radius.circular(10.0),
+            )),
+        context: context,
+        builder: (BuildContext bc) {
+          return Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading:  Icon(
+                    Icons.camera_enhance_sharp,
+                    color: Colors.green,
+                  ),
+                  title: const Text('Camera',),
+                  onTap: () => {
+                    mainprovider.UsersgetImagecamera(), Navigator.pop(context)
+                  }),
+              ListTile(
+                  leading:  Icon(Icons.photo, color: Colors.green),
+                  title: const Text('Gallery',),
+                  onTap: () => {
+                    mainprovider.UsersgetImagegallery(),Navigator.pop(context)
+                  }),
+            ],
+          );
+        });
+    // ImageSource
   }
 }

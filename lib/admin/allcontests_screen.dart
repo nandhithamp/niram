@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:niram/constants/call_functions.dart';
+import 'package:niram/provider/main_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'add_contest.dart';
 import 'contestdescription_screen.dart';
@@ -19,18 +21,6 @@ class AllContests extends StatelessWidget {
     ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
 
     List<String> contests = ["All", "Ongoing", "Closed", "Upcoming"];
-    List<String> Images = [
-      "assets/digital.jpg",
-      "assets/digitalfree.jpg",
-      "assets/digitalp.jpg",
-      // "assets/digitalpainting.jpeg",
-    ];
-    List<String> titles = [
-      "Upcoming",
-      "Digital Painting\n Theme:Nature",
-      "Oil Painting\n Theme:Nature"
-    ];
-
     return SafeArea(
       child: Scaffold(
 
@@ -68,19 +58,25 @@ class AllContests extends StatelessWidget {
               ],
             ),
           ),
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            onPressed: (){
-            callNext(context, AddContests());
-            },
-            child: Text(
-              'Add New Contest',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+          child: Consumer<MainProvider>(
+            builder: (context,val,child) {
+              return FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                onPressed: (){
+                  val.getCategory();
+                  val.contestclear();
+                callNext(context, AddContests(from:"NEW", oldid: '',));
+                },
+                child: Text(
+                  'Add New Contest',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            }
           ),
         ),
         body: SingleChildScrollView(
@@ -129,61 +125,76 @@ class AllContests extends StatelessWidget {
               SizedBox(height: 10),
               SizedBox(
                 height: 50,
-                child: ListView.builder(
-                    itemCount: contests.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey)),
-                          height:35 ,
-                          width: 70,
-                          child: Center(child: Text(contests[index],style: TextStyle(fontSize: 10),)),
-                        ),
-                      );
-                    })),
+                child: Consumer<MainProvider>(
+                  builder: (context,value,child) {
+                    return ListView.builder(
+                        itemCount: contests.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: ((context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.grey)),
+                              height:35 ,
+                              width: 70,
+                              child: Center(child: Text(contests[index],style: TextStyle(fontSize: 10),)),
+                            ),
+                          );
+                        }));
+                  }
+                ),
               ),
-              SizedBox(
+              Consumer<MainProvider>(
+                builder: (context,val,child) {
+                  print("dcjcbn"+val.contestList.length.toString());
+                  return SizedBox(
 
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                    itemCount: Images.length,
-                    shrinkWrap: true,
-          
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            callNext(context, ContestDescriptions());
-                          },
-                          child: Container(
-                            height: height / 4,
-                            width: width,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                // color: Colors.pink,
-                                image: DecorationImage(
-                                    image: AssetImage(Images[index]),
-                                    fit: BoxFit.fill)),
-                            child: Center(
-                                child: Text(
-                                  titles[index],
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                )),
-                          ),
-                        ),
-                      );
-                    })),
+                    child: ListView.builder(
+                      physics: ScrollPhysics(),
+                        itemCount: val.contestList.length,
+                        shrinkWrap: true,
+
+
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: ((context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: (){
+                                callNext(context, ContestDescriptions(id: val.contestList[index].id, photo: val.contestList[index].photo,
+                                  category: val.contestList[index].category,categoryid:val.contestList[index].categoryid,
+                                  contest_theme:val.contestList[index].contest_theme, age: val.contestList[index].age,
+                                  registation_fee: val.contestList[index].registation_fee,status: val.contestList[index].status,
+                                  winning_price: val.contestList[index].winning_price, from_date:val.contestList[index].from_date,
+                                  to_date: val.contestList[index].to_date, termsand_condition: val.contestList[index].termsand_condition,));
+                              },
+                              child: Container(
+                                height: height / 4,
+                                width: width,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    // color: Colors.pink,
+                                    image: DecorationImage(
+                                        image: NetworkImage(val.contestList[index].photo),
+                                        fit: BoxFit.fill)),
+                                child: Center(
+                                    child: Text(
+                                      val.contestList[index].category.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    )),
+                              ),
+                            ),
+                          );
+                        })),
+                  );
+                }
               )
             ],
           ),

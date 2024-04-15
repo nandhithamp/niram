@@ -110,7 +110,7 @@ Widget row(double width,double width2,String txt,){
     ],
   );
 }
-Widget RegisterField(double hgt,double width,String name){
+Widget RegisterField(double hgt,double width,String name,TextEditingController controller){
   return Container(
     decoration: BoxDecoration(
         color: Colors.white,
@@ -126,14 +126,17 @@ Widget RegisterField(double hgt,double width,String name){
     width: width,
 
     child: TextFormField(
+      controller: controller,
+
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
           hintText: name,
           hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
           border: InputBorder.none),
     ),
   );
 }
-Widget RegisterField1(double hgt,double width,String name,int maxLength){
+Widget RegisterField1(double hgt,double width,String name,int maxLength,TextEditingController controller){
   return Container(
     decoration: BoxDecoration(
         color: Colors.white,
@@ -149,9 +152,12 @@ Widget RegisterField1(double hgt,double width,String name,int maxLength){
     width: width,
 
     child: TextFormField(
+      controller: controller,
+
       keyboardType: TextInputType.number,
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
       decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
           hintText: name,
           hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
           border: InputBorder.none),
@@ -171,6 +177,52 @@ Widget textGradient(String txt){
           fontSize: 25.0,
           color: Colors.white,
           fontWeight: FontWeight.bold),
+    ),
+  );
+}
+Widget adminhomebtn(String img,String txts){
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 5),
+    child: Container(
+      height: 50,
+      width: 300,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Color(0xff047E8F)),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 50,
+              width: 50,
+
+
+              decoration: BoxDecoration(
+                color: Colors.teal,
+                shape: BoxShape.circle,
+              ),
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+
+                    image: DecorationImage(image: AssetImage(img))
+                ),
+              ),
+            ),
+          ),
+          Text(txts,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w200,
+                fontFamily: "amikosemi"),
+          ),
+        ],
+
+      ),
     ),
   );
 }

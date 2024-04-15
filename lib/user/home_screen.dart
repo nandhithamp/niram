@@ -4,14 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niram/constants/call_functions.dart';
+import 'package:niram/provider/main_provider.dart';
 import 'package:niram/user/contest_screen.dart';
 import 'package:niram/user/my_profile.dart';
 import 'package:niram/user/shortlisted_screen.dart';
 import 'package:niram/user/winners_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+
+   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -111,46 +114,50 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Container(
               height: 230,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: itemimages.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 225,
-                      width: 395,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 3, color: Colors.grey)
-                          ],
-                          image: DecorationImage(
-                              image: AssetImage('assets/happiness.jpg'),
-                              fit: BoxFit.cover)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Photography",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400),
+              child: Consumer<MainProvider>(
+                builder: (context,value,child) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: value.carouselList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 225,
+                          width: 395,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 3, color: Colors.grey)
+                              ],
+                              image: DecorationImage(
+                                  image: NetworkImage(value.carouselList[index].carousel_photo),
+                                  fit: BoxFit.cover)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                value.carouselList[index].category_name,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Text(
+                                "Theme: "+value.carouselList[index].contest_theme,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                              )
+                            ],
                           ),
-                          Text(
-                            "Theme: Happiness",
-                            style: TextStyle(
-                              fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          )
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   );
-                },
+                }
               ),
             ),
             SizedBox(
@@ -172,33 +179,38 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: (){
-                    callNext(context, ContestScreen());
-                  },
-                  child: Container(
-                    height: 63,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(color: Color(0xff088090))),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                            backgroundImage: AssetImage("assets/contests.jpg")),
-                        SizedBox(
-                          width: 8,
+                Consumer<MainProvider>(
+                  builder: (context,value,child) {
+                    return GestureDetector(
+                      onTap: (){
+                        value.getContest();
+                        callNext(context, ContestScreen());
+                      },
+                      child: Container(
+                        height: 63,
+                        width: 150,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                            border: Border.all(color: Color(0xff088090))),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                                backgroundImage: AssetImage("assets/contests.jpg")),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              "Contests",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
+                            )
+                          ],
                         ),
-                        Text(
-                          "Contests",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  }
                 ),
                 GestureDetector(
                   onTap: (){

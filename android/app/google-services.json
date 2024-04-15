@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "754978256917",
+    "project_id": "niram-62939",
+    "storage_bucket": "niram-62939.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754978256917:android:141f5a0dc98b43f7b6361c",
+        "android_client_info": {
+          "package_name": "com.example.niram"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmgiSee5sGqouqgzbTslC3_UoPp6mBQaU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

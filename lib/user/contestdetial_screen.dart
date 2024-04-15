@@ -5,7 +5,22 @@ import 'package:niram/constants/refactoring.dart';
 import 'package:niram/user/upload_screen.dart';
 
 class ContestDetials extends StatelessWidget {
-  const ContestDetials({super.key});
+  String id;
+  String photo;
+  String category;
+  String categoryid;
+  String contest_theme;
+  String age;
+  String registation_fee;
+  String status;
+  String winning_price;
+  String from_date;
+  String to_date;
+  String termsand_condition;
+  ContestDetials({super.key,required this.id,required this.photo,required this.category,
+    required this.categoryid,required this.contest_theme,required this.age,required this.registation_fee,
+    required this.status,required this.winning_price,required this.from_date,required this.to_date,
+    required this.termsand_condition});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +45,7 @@ class ContestDetials extends StatelessWidget {
                   width: width,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("assets/oil_painting.jpg"),
+                          image: NetworkImage(photo),
                           fit: BoxFit.cover)),
                   child: Padding(
                     padding: const EdgeInsets.all(15),
@@ -42,8 +57,11 @@ class ContestDetials extends StatelessWidget {
                           children: [
                             Column(crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Oil Painting",style: TextStyle(color: Colors.white,fontSize: 24),),
-                                Text("Theme: Travel ",style: TextStyle(color: Colors.white,fontSize: 24),),],),
+                                Text(
+                                  // "Oil Painting"
+                                  category,
+                                  style: TextStyle(color: Colors.white,fontSize: 24),),
+                                Text("Theme:"+contest_theme,style: TextStyle(color: Colors.white,fontSize: 24),),],),
                            Image.asset("assets/Share_icon.png",scale: 4.5,)
                           ],
                         ),
@@ -53,7 +71,7 @@ class ContestDetials extends StatelessWidget {
                             Column(crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text("Winning Prize",style: TextStyle(color: Colors.white,fontSize: 24),),
-                                Text("7000",style: TextStyle(color: Colors.white,fontSize: 24),),],),
+                                Text(winning_price,style: TextStyle(color: Colors.white,fontSize: 24),),],),
                           ],
                         ),
                       ],
@@ -69,19 +87,19 @@ class ContestDetials extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           container(
-                              height / 14, width / 2.2, "Age limit", "15-20"),
+                              height / 14, width / 2.2, "Age limit " ,  age),
                           SizedBox(
                             width: width / 30,
                           ),
                           container(height / 14, width / 2.2,
-                              "Registration fee", "20"),
+                              "Registration fee", registation_fee),
                         ],
                       ),
                       SizedBox(
                         height: height / 50,
                       ),
                       container(height / 14, width, "Duration",
-                          "27-01-2024  -  10-02-2024"),
+                          from_date + " - " + to_date),
                       SizedBox(
                         height: height / 50,
                       ),
@@ -101,43 +119,44 @@ class ContestDetials extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            row(width / 35, width / 1.15,
-                                "Competitions must be completed within the stipulated time",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                "Draw only after you have fully understood the subject given to you.",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                "Try to draw the entire surface on the drawing surface",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                "Make sure there is no dust in the drawing.",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                "നിശ്ചിത സമയത്തിനുള്ളിൽ മത്സരങ്ങൾ പൂർത്തിയാക്കണം",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                "നിങ്ങൾക്കു തന്നിരിക്കുന്ന വിഷയം പൂർണമായും മനസ്സിലാക്കിയതിനു ശേഷം മാത്രം വരക്കുക",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                " വരക്കുന്ന പ്രതലത്തിൽ മുഴുവനായി വരയ്ക്കാൻ ശ്രമിക്കുക",),
-                            SizedBox(
-                              height: height / 50,
-                            ),
-                            row(width / 35, width / 1.15,
-                                "വരക്കുന്ന ചിത്രത്തിൽ പൊടിയോ മറ്റോ ആകാതിരിക്കാൻ ശ്രദ്ധിക്കുക.",),
+                            Text(termsand_condition)
+                            // row(width / 35, width / 1.15,
+                            //     "Competitions must be completed within the stipulated time",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     "Draw only after you have fully understood the subject given to you.",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     "Try to draw the entire surface on the drawing surface",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     "Make sure there is no dust in the drawing.",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     "നിശ്ചിത സമയത്തിനുള്ളിൽ മത്സരങ്ങൾ പൂർത്തിയാക്കണം",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     "നിങ്ങൾക്കു തന്നിരിക്കുന്ന വിഷയം പൂർണമായും മനസ്സിലാക്കിയതിനു ശേഷം മാത്രം വരക്കുക",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     " വരക്കുന്ന പ്രതലത്തിൽ മുഴുവനായി വരയ്ക്കാൻ ശ്രമിക്കുക",),
+                            // SizedBox(
+                            //   height: height / 50,
+                            // ),
+                            // row(width / 35, width / 1.15,
+                            //     "വരക്കുന്ന ചിത്രത്തിൽ പൊടിയോ മറ്റോ ആകാതിരിക്കാൻ ശ്രദ്ധിക്കുക.",),
                           ],
                         ),
                       ),
@@ -151,7 +170,7 @@ class ContestDetials extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: (){
-                              callNext(context, UploadScreen());
+                              callNext(context, UploadScreen(Contest_id: id,));
                             },
                             child: Container(
                               height: height / 20,
