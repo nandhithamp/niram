@@ -538,7 +538,8 @@ class MainProvider extends ChangeNotifier {
     }
     return null;  // Return null if no numbers are found
   }
-  void checkCustomerAge(String id,String age,BuildContext context){
+  void checkCustomerAge(String id,String age,String category,String customerPhone,String customerID,String customerName,String categoryID,
+      BuildContext context){
     print(id+' IIDE iHE');
     db.collection('CUSTOMER').doc(id).get().then((value){
       if(value.exists){
@@ -546,7 +547,10 @@ class MainProvider extends ChangeNotifier {
         print(map['Age'].toString()+' IRUFNRF iRF');
         print(age+' EWEDEW iRF');
         if(int.parse(map['Age'].toString())<=int.parse(extractNumber(age).toString())){
-          callNext(context, UploadScreen(Contest_id: id,));
+          imagefileList.clear();
+          notifyListeners();
+          callNext(context, UploadScreen(Contest_id: id,customerID:customerID ,categoryID: categoryID,
+          customerName: customerName,customerPhone: customerPhone,category: category,));
         }else{
           ScaffoldMessenger.of(context)
               .showSnackBar( SnackBar(
@@ -619,7 +623,9 @@ class MainProvider extends ChangeNotifier {
       ],
     );
     if (croppedFile != null) {
+      print(' TTTy EYFE '+imagefileList.length.toString());
       addUsersImg = File(croppedFile.path);
+
       // print(Registerfileimg.toString() + "fofiifi");
       notifyListeners();
     }
@@ -790,6 +796,7 @@ class MainProvider extends ChangeNotifier {
   // void uploadWork1(){
   //
   // }
+  List<File> imagefileList = [];
   File? addPwork1FileImg = null;
   String Pwork1Img = '';
   File? addPwork2FileImg=null;
@@ -797,44 +804,68 @@ class MainProvider extends ChangeNotifier {
   File? addPwork3FileImg=null;
   String Pwork3Img='';
   List<File> participant_workList=[];
-  Future<void> UploadWork(BuildContext context, String contest_id) async {
+  bool loader=false;
+  void onLoader(){
+    loader=true;
+    notifyListeners();
+  }
+  void offLoader(){
+    loader=false;
+    notifyListeners();
+  }
+  Future<void> UploadWork(BuildContext context, String contest_id,
+      String category,String customerPhone,String customerID,String customerName,String categoryID) async {
 
     String id = DateTime.now().microsecondsSinceEpoch.toString();
     HashMap<String, Object> participant_map = HashMap();
     HashMap<String, Object> work_map = HashMap();
     int i=1;
-    for(var img in participant_workList ) {
-      if (img != null) {
-        String photoId = DateTime
-            .now()
-            .millisecondsSinceEpoch
-            .toString();
-        ref = FirebaseStorage.instance.ref().child(photoId);
-        await ref.putFile(addCarouselImg!).whenComplete(() async {
-          await ref.getDownloadURL().then((value) {
-            // participant_map["Image"] = value;
-            work_map[i.toString()]=value;
 
+    List<String> list=[];
+    if(imagefileList.length>0){
+      for (int i = 0; i < imagefileList.length; i++) {
+        String time = DateTime.now().millisecondsSinceEpoch.toString();
+        ref = FirebaseStorage.instance.ref().child('Images').child(time); // Specify the full path including the filename
+        await ref.putFile(imagefileList[i]).whenComplete(() async {
+          await ref.getDownloadURL().then((value1) {
+            list.add(value1);
+            print(list.toString()+' KMVKNVKFNV');
+            work_map["IMAGELIST"] = list;
             notifyListeners();
           });
-          notifyListeners();
         });
       }
-      else {
-         //participant_map['Image'] = Image;
-        work_map[i.toString()]=Image;
-      }
-      i++;
+
     }
     participant_map["work"] = work_map;
-    // print("${participant.length}.........................");
+    participant_map["CUSTOMER_ID"] = customerID;
+    participant_map["CUSTOMER_NAME"] = customerName;
+    participant_map["CUSTOMER_PHONE"] = customerPhone;
+    participant_map["CATEGORY"] = category;
+    participant_map["CATEGORY_ID"] = categoryID;
+
+
+    print(participant_map.toString()+' IFRJF iFRRF');
     db.collection("PARTICIPANT").doc(id).set(participant_map);
 
     clearUploadWork();
     notifyListeners();
+    offLoader();
+    ScaffoldMessenger.of(context)
+        .showSnackBar( SnackBar(
+      backgroundColor: Colors.green,
+      content: Center(
+        child: Text(
+            "Uploaded Successfully",style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w800,)),
+      ),
+      duration:
+      Duration(milliseconds: 3000),
+    ));
     finish(context);
     // callNext(context, AdminHome());
   }
+
+
   Future getImgwork1gallery() async {
     final imagePicker = ImagePicker();
     final pickedImage =
@@ -894,6 +925,9 @@ class MainProvider extends ChangeNotifier {
     );
     if (croppedFile != null) {
       addPwork1FileImg = File(croppedFile.path);
+      if(imagefileList.length<3){
+        imagefileList.add( File(croppedFile.path)!);
+      }
       // print(Registerfileimg.toString() + "fofiifi");
       notifyListeners();
     }

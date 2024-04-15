@@ -188,7 +188,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     return GestureDetector(
                       onTap: (){
                         value.getContest();
-                        callNext(context, ContestScreen(customerID: widget.id,));
+                        callNext(context, ContestScreen(customerID: widget.id,customerPhone: widget.phone,
+                            customerName: widget.name,));
                       },
                       child: Container(
                         height: 63,

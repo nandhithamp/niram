@@ -21,10 +21,12 @@ class ContestDetials extends StatelessWidget {
   String to_date;
   String termsand_condition;
   String customerID;
+  String customerName;
+  String customerPhone;
   ContestDetials({super.key,required this.id,required this.photo,required this.category,
     required this.categoryid,required this.contest_theme,required this.age,required this.registation_fee,
     required this.status,required this.winning_price,required this.from_date,required this.to_date,
-    required this.termsand_condition, required this.customerID,});
+    required this.termsand_condition, required this.customerID,required this.customerPhone,required this.customerName,});
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +177,7 @@ class ContestDetials extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: (){
-                              mainprovider.checkCustomerAge(customerID,age,context);
+                              mainprovider.checkCustomerAge(customerID,age,category,customerPhone,customerID,customerName,categoryid,context);
                             },
                             child: Container(
                               height: height / 20,

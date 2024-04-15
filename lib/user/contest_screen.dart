@@ -10,8 +10,8 @@ import '../constants/refactoring.dart';
 import 'contestdetial_screen.dart';
 
 class ContestScreen extends StatelessWidget {
-  String customerID;
-  ContestScreen({super.key,required this.customerID});
+  String customerID,customerPhone,customerName;
+  ContestScreen({super.key,required this.customerID,required this.customerPhone,required this.customerName});
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,8 @@ class ContestScreen extends StatelessWidget {
                                 contest_theme:value.contestList[index].contest_theme,age: value.contestList[index].age,
                                 registation_fee: value.contestList[index].registation_fee, status: value.contestList[index].status,
                                 winning_price:value.contestList[index].winning_price, from_date: value.contestList[index].from_date,
-                                to_date: value.contestList[index].to_date, termsand_condition: value.contestList[index].termsand_condition,));
+                                to_date: value.contestList[index].to_date, termsand_condition: value.contestList[index].termsand_condition,
+                              customerPhone: customerPhone,customerName: customerName,));
                             },
                             child: Padding(
                               padding:
