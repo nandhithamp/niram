@@ -449,7 +449,7 @@ class MainProvider extends ChangeNotifier {
          Map<dynamic, dynamic> map = e.data();
 
          adminsList.add(
-             AdminsModel(e.id,map["PHOTO"].toString(), map["Name"].toString(),map["Designation"].toString())
+             AdminsModel(e.id,map["PHOTO"].toString(), map["Name"].toString(),map["TYPE"]??'')
          );
          notifyListeners();
        }

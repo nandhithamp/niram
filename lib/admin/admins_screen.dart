@@ -300,7 +300,7 @@ class Admins extends StatelessWidget {
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Text(value.adminsList[index].admin_designation.toString(),
+                                        Text(value.adminsList[index].admin_designation.toString().toLowerCase(),
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
