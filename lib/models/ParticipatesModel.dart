@@ -5,5 +5,14 @@ class ParticipatesModel{
   String customerPhone;
   String categoryID;
   List<dynamic> list;
-  ParticipatesModel(this.id,this.customer,this.category,this.customerPhone,this.categoryID,this.list);
+  bool selectionBool;
+  ParticipatesModel(this.id,this.customer,this.category,
+      this.customerPhone,this.categoryID,this.list,this.selectionBool);
+}
+
+class CategorySelectionModel{
+  String catID;
+  String catName;
+  bool selectionBool;
+  CategorySelectionModel(this.catID,this.catName,this.selectionBool);
 }

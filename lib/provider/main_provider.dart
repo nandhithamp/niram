@@ -888,6 +888,8 @@ class MainProvider extends ChangeNotifier {
   }
 
   List<ParticipatesModel> ParticipatesList=[];
+  List<ParticipatesModel> filterParticipatesList=[];
+  List<CategorySelectionModel> categoriesSelectionList=[];
   void fetchAllParticipats(){
     ParticipatesList.clear();
     db.collection('PARTICIPANT').get().then((value){
@@ -900,16 +902,54 @@ class MainProvider extends ChangeNotifier {
             list=map['IMAGELIST'];
             print(' JFNDIRF FRI FR');
           }
+          categoriesSelectionList.add(CategorySelectionModel(map['CUSTOMER_ID'].toString(),
+              map['CUSTOMER_NAME'].toString(), false));
           ParticipatesList.add(ParticipatesModel(elements.id,
               map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
-              map['CUSTOMER_PHONE'].toString(), map['CUSTOMER_ID'].toString(), list));
-          notifyListeners();
+              map['CUSTOMER_PHONE'].toString(), map['CUSTOMER_ID'].toString(), list,false));
         }
+        filterParticipatesList=ParticipatesList;
+        categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+        notifyListeners();
       }
     });
 
   }
 
+  void filterFun(int index,String name,String catID){
+    if(categoriesSelectionList[index].selectionBool){
+      categoriesSelectionList[index].selectionBool=false;
+    }else{
+      categoriesSelectionList[index].selectionBool=true;
+    }
+    for(var ee in categoriesSelectionList){
+    if(ee.catName!=name){
+      ee.selectionBool=false;
+    }
+    }
+    filterParticipatesList=ParticipatesList.where((element) => element.categoryID==catID).toSet().toList();
+    notifyListeners();
+  }
+
+  List<CategorySelectionModel> removeCategorySelectionModel(List<CategorySelectionModel> processModal){
+
+    List<CategorySelectionModel> temp = [];
+    List<String> sampleStrings = [];
+
+    for(var sample in processModal) {
+      var sampleString =
+          sample.catID.toString()+" "
+              + sample.catName.toString()+" "
+      ;
+
+      if(!sampleStrings.contains(sampleString)){
+        sampleStrings.add(sampleString);
+        temp.add(sample);
+      }
+    }
+
+    return temp;
+  }
 
   Future getImgwork1gallery() async {
     final imagePicker = ImagePicker();
