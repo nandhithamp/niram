@@ -117,21 +117,28 @@ class _ParticipantsState extends State<Participants> {
                       var item = value.filterParticipatesList[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: InkWell(onLongPress: (){
-                    if(item.shortListStatus!='YES'){
-                      makeShortListAlert(context,item.id);
+                        child: InkWell(
+                          onLongPress: () async {
+                            value.editcontest(item.contestID);
+                        if(item.shortListStatus!='YES'){
+                          makeShortListAlert(context,item.id);
 
-                    }else{
-    if(item.winnerStatus!='YES') {
-      winnerAlert(context, item.id);
-    }
-                    }
-                        },
-                          onTap: (){
-                          if(item.shortListStatus=='YES'){
-                            winnerAlert(context,item.id);
                           }
-                          },
+                        else
+                        {
+                          bool status = await value.check_conteststatus(item.contestID);
+                          if(status)
+                            {winnerAlert(context, item.id, item.contestID);}
+                          else
+                            {conteststatusAlert(context);}
+
+                          }
+                        },
+                          // onTap: (){
+                          // if(item.shortListStatus=='YES'){
+                          //   winnerAlert(context,item.id);
+                          // }
+                          // },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -360,7 +367,7 @@ class _ParticipantsState extends State<Participants> {
           );
         });
   }
- winnerAlert(context,String id)  {
+ winnerAlert(context,String id, String contestid)  {
     return  showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -461,7 +468,7 @@ class _ParticipantsState extends State<Participants> {
                                   onPressed: () {
                                     MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
 
-                                    mainprovider.winnerAssign(id,context);
+                                    mainprovider.winnerAssign(id,context,contestid);
                                   },
                                   child: const Text(
                                     'Winner',
@@ -475,6 +482,88 @@ class _ParticipantsState extends State<Participants> {
                             ),
 
                           ],
+                        );
+                      }
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+  conteststatusAlert(context)  {
+    return  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(26),
+            ),
+            content: Container(
+              width: 401,
+              height: 213,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(28),
+
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  SizedBox(height: 20,),
+
+                  const Text(
+                    "Contest not closed.",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                      height: 1.56,
+                    ),
+                  ),
+
+                  const SizedBox(height: 35),
+
+                  Consumer<MainProvider>(
+                      builder: (context,valuee1,child) {
+                        return SizedBox(
+                          height: 39,
+                          width: 110,
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateProperty.all(Colors.transparent), // Remove overlay color
+                                  shadowColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.5)), // Set shadow color
+                                  // Define the shadow properties
+                                  elevation: MaterialStateProperty.all(5), //
+                                  textStyle: MaterialStateProperty.all(
+                                      const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w900)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.white),
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(60)))),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+
+                              },
+                              child: const Text(
+                                'OK',
+                                style: TextStyle(
+                                  color:Color(0xff1746A2),
+                                  fontSize: 16,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )),
                         );
                       }
                   ),

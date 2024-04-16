@@ -417,7 +417,7 @@ class _AddContestsState extends State<AddContests> {
                               fontWeight: FontWeight.normal),
                         ),
                         Container(
-                          width: 120,
+                          width: 121,
                           height: 50,
                           color: Color(0xff0C8290),
                           child: Consumer<MainProvider>(

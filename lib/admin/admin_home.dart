@@ -27,6 +27,7 @@ class AdminHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -68,10 +69,23 @@ class AdminHome extends StatelessWidget {
                   }
                 ),
 
-                adminhomebtn(
-                  "assets/winners.jpg",
-                  "Winners",
+                Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return InkWell(onTap: () {
+                        value.get_allwinners();
+                        value.getCategory();
+
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>WinnersList()));
+                      },
+                          child: adminhomebtn("assets/winners.jpg", "Winners"));
+                    }
                 ),
+
+                // adminhomebtn(
+                //   "assets/winners.jpg",
+                //   "Winners",
+                // ),
                 adminhomebtn(
                   "assets/shortlisted.jpg",
                   "Shortlisted",
@@ -108,7 +122,7 @@ class AdminHome extends StatelessWidget {
                   }
                 ),
                 InkWell(onTap: (){
-                  MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+
                   mainprovider.addAdminImg=null;
                   mainprovider.NameController.clear();
                   mainprovider.PhoneNumberController.clear();
@@ -148,7 +162,7 @@ class AdminHome extends StatelessWidget {
                   builder: (context,value,child) {
                     return InkWell(
                       onTap: () {
-                        MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+
                         mainprovider.fetchAllParticipats();
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants(from: 'ADMIN',)));
                       },

@@ -177,7 +177,7 @@ class ContestDetials extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: (){
-                              mainprovider.checkCustomerAge(customerID,age,category,customerPhone,customerID,customerName,categoryid,context);
+                              mainprovider.checkCustomerAge(customerID,age,category,customerPhone,customerID,customerName,categoryid,contest_theme,context);
                             },
                             child: Container(
                               height: height / 20,

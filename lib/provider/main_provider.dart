@@ -49,19 +49,26 @@ class MainProvider extends ChangeNotifier {
   }
 
   List<CategoryModel> categoryList = [];
+  List<String> categorynameList = [];
 
   void getCategory() {
+    print("qqqqqqqqqqqqqqqqqqqqqqqq");
     db.collection("CATEGORY").get().then((value) {
       if (value.docs.isNotEmpty) {
         categoryList.clear();
+        categorynameList.clear();
+        categorynameList = ["Select Contest"];
         for (var e in value.docs) {
           Map<dynamic, dynamic> map = e.data();
 
           categoryList.add(
               CategoryModel(e.id, map["Name"].toString())
           );
-          notifyListeners();
+          categorynameList.add(map["Name"].toString());
+          print(categorynameList);
+
         }
+        notifyListeners();
       }
     });
     notifyListeners();
@@ -306,9 +313,14 @@ class MainProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  Map<dynamic, dynamic> contestmap = {};
+
   void editcontest(String id){
+    contestmap.clear();
     db.collection("CONTESTS").doc(id).get().then((value){
       Map<dynamic, dynamic> map = value.data()as Map;
+      contestmap = value.data()as Map;
       if(value.exists){
         categorynamect.text=map["Category_Name"].toString();
         contestthemect.text=map["ContestTheme"].toString();
@@ -507,21 +519,28 @@ class MainProvider extends ChangeNotifier {
    finish(context);
  }
 
-  void winnerAssign(String id,BuildContext context){
-    HashMap<String, Object> map = HashMap();
-    map['WINNER_STATUS']='YES';
-    db.collection('PARTICIPANT').doc(id).set(map,SetOptions(merge: true));
-    ScaffoldMessenger.of(context)
-        .showSnackBar( SnackBar(
-      backgroundColor: Colors.green,
-      content: Center(
-        child: Text(
-            "Successfuly Assigned as Winner",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
-      ),
-      duration:
-      Duration(milliseconds: 3000),
-    ));
-    finish(context);
+  void winnerAssign(String id,BuildContext context, String contestid){
+   db.collection("CONTESTS").where("Id", isEqualTo: contestid).where("Status",isEqualTo: "Closed").get().then((value)
+   {
+     if(value.docs.isNotEmpty)
+       {
+         HashMap<String, Object> map = HashMap();
+         map['WINNER_STATUS']='YES';
+         db.collection('PARTICIPANT').doc(id).set(map,SetOptions(merge: true));
+         ScaffoldMessenger.of(context)
+             .showSnackBar( SnackBar(
+           backgroundColor: Colors.green,
+           content: Center(
+             child: Text(
+                 "Successfuly Assigned as Winner",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
+           ),
+           duration:
+           Duration(milliseconds: 3000),
+         ));
+         finish(context);
+       }
+   });
+    
   }
 
 
@@ -608,7 +627,7 @@ class MainProvider extends ChangeNotifier {
     return null;  // Return null if no numbers are found
   }
   void checkCustomerAge(String id,String age,String category,String customerPhone,String customerID,String customerName,String categoryID,
-      BuildContext context){
+      String theme,BuildContext context){
     print(id+' IIDE iHE');
     db.collection('CUSTOMER').doc(id).get().then((value){
       if(value.exists){
@@ -620,7 +639,7 @@ class MainProvider extends ChangeNotifier {
           notifyListeners();
           offLoader();
           callNext(context, UploadScreen(Contest_id: id,customerID:customerID ,categoryID: categoryID,
-          customerName: customerName,customerPhone: customerPhone,category: category,));
+          customerName: customerName,customerPhone: customerPhone,category: category,contest_theme: theme));
         }else{
           ScaffoldMessenger.of(context)
               .showSnackBar( SnackBar(
@@ -884,7 +903,7 @@ class MainProvider extends ChangeNotifier {
     notifyListeners();
   }
   Future<void> UploadWork(BuildContext context, String contest_id,
-      String category,String customerPhone,String customerID,String customerName,String categoryID) async {
+      String category,String customerPhone,String customerID,String customerName,String categoryID, String contest_theme) async {
     if(imagefileList.length>0) {
       String id = DateTime
           .now()
@@ -918,6 +937,8 @@ class MainProvider extends ChangeNotifier {
       participant_map["CUSTOMER_PHONE"] = customerPhone;
       participant_map["CATEGORY"] = category;
       participant_map["CATEGORY_ID"] = categoryID;
+      participant_map["CONTEST_ID"] = contest_id;
+      participant_map["CONTEST_THEME"] = contest_theme;
 
 
       print(participant_map.toString() + ' IFRJF iFRRF');
@@ -952,12 +973,15 @@ class MainProvider extends ChangeNotifier {
         Duration(milliseconds: 3000),
       ));
     }
+    notifyListeners();
     // callNext(context, AdminHome());
   }
 
   List<ParticipatesModel> ParticipatesList=[];
   List<ParticipatesModel> filterParticipatesList=[];
   List<CategorySelectionModel> categoriesSelectionList=[];
+  String contest_status = "Ongoing";
+
   void fetchAllParticipats(){
     ParticipatesList.clear();
     filterParticipatesList.clear();
@@ -974,10 +998,10 @@ class MainProvider extends ChangeNotifier {
           categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
               map['CATEGORY'].toString(), false));
           ParticipatesList.add(ParticipatesModel(elements.id,
-              map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
-              map['CUSTOMER_PHONE'].toString(), map['CATEGORY_ID'].toString(), list,false,
-              map['SHORT_LIST_STATUS']??"",
-              map['WINNER_STATUS']??"",
+            map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
+            map['CUSTOMER_PHONE'].toString(), map['CATEGORY_ID'].toString(), map['CONTEST_ID'].toString(), list,false,
+            map['SHORT_LIST_STATUS']??"",
+            map['WINNER_STATUS']??"",
           ));
         }
         filterParticipatesList=ParticipatesList;
@@ -986,6 +1010,19 @@ class MainProvider extends ChangeNotifier {
       }
     });
 
+  }
+
+  Future<bool> check_conteststatus(String contestid)
+  async {
+    var stat = await db.collection("CONTESTS").where("Id", isEqualTo: contestid).where("Status", isEqualTo: "Closed").get();
+    if(stat.docs.isNotEmpty)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   void filterFun(int index,String name,String catID){
@@ -1225,8 +1262,160 @@ class MainProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   void clearUploadWork(){
     participant_workList.clear();
+    notifyListeners();
   }
+
+  List<ParticipatesModel> WinnerList=[];
+  List<ParticipatesModel> ShortlistedList=[];
+  String winnerdropdownvalue = "Select Contest";
+  
+  void change_contestdropdownval(String newval)
+  {
+    winnerdropdownvalue  = newval;
+    notifyListeners();
+    
+  }
+  
+  void getcontestid(String contestname)
+  {
+    //db.collection("CONTESTS").where()
+  }
+
+void get_allwinners()
+{
+  db.collection("PARTICIPANT").where("WINNER_STATUS", isEqualTo: "YES").get().then((value)
+  {
+    if(value.docs.isNotEmpty)
+      {
+        WinnerList.clear();
+        filterParticipatesList.clear();
+        for(var elements in value.docs) {
+          Map<dynamic, dynamic> map = elements.data() as Map;
+          List<dynamic> list = [''];
+          categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+              map['CATEGORY'].toString(), false));
+          WinnerList.add(ParticipatesModel(
+            elements.id,
+            map['CUSTOMER_NAME'].toString(),
+            map['CATEGORY'].toString(),
+            map['CUSTOMER_PHONE'].toString(),
+            map['CATEGORY_ID'].toString(),
+            map['CONTEST_ID'].toString(),
+            list,
+            false,
+            map['SHORT_LIST_STATUS'] ?? "",
+            map['WINNER_STATUS'] ?? "",
+          ));
+          notifyListeners();
+        }
+        filterParticipatesList=WinnerList;
+        categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+      }
+    notifyListeners();
+  });
+}
+
+void get_contestwinner(String categoryname)
+{
+  if(categoryname != "Select Contest")
+    {
+      db.collection("PARTICIPANT").where("WINNER_STATUS", isEqualTo: "YES").where("CATEGORY", isEqualTo: categoryname).get().then((value)
+      {
+        if(value.docs.isNotEmpty)
+        {
+          WinnerList.clear();
+          filterParticipatesList.clear();
+          for(var elements in value.docs) {
+            Map<dynamic, dynamic> map = elements.data() as Map;
+            List<dynamic> list = [''];
+            categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+                map['CATEGORY'].toString(), false));
+            WinnerList.add(ParticipatesModel(
+              elements.id,
+              map['CUSTOMER_NAME'].toString(),
+              map['CATEGORY'].toString(),
+              map['CUSTOMER_PHONE'].toString(),
+              map['CATEGORY_ID'].toString(),
+              map['CONTEST_ID'].toString(),
+              list,
+              false,
+              map['SHORT_LIST_STATUS'] ?? "",
+              map['WINNER_STATUS'] ?? "",
+            ));
+            notifyListeners();
+          }
+          filterParticipatesList=WinnerList;
+          categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+        }
+        notifyListeners();
+      });
+    }
+  else
+    {
+      db.collection("PARTICIPANT").where("WINNER_STATUS", isEqualTo: "YES").get().then((value)
+      {
+        if(value.docs.isNotEmpty)
+        {
+          WinnerList.clear();
+          filterParticipatesList.clear();
+          for(var elements in value.docs) {
+            Map<dynamic, dynamic> map = elements.data() as Map;
+            List<dynamic> list = [''];
+            categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+                map['CATEGORY'].toString(), false));
+            WinnerList.add(ParticipatesModel(
+              elements.id,
+              map['CUSTOMER_NAME'].toString(),
+              map['CATEGORY'].toString(),
+              map['CUSTOMER_PHONE'].toString(),
+              map['CATEGORY_ID'].toString(),
+              map['CONTEST_ID'].toString(),
+              list,
+              false,
+              map['SHORT_LIST_STATUS'] ?? "",
+              map['WINNER_STATUS'] ?? "",
+            ));
+            notifyListeners();
+          }
+          filterParticipatesList=WinnerList;
+          categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+        }
+        notifyListeners();
+      });
+    }
+
+}
+
+void get_allshortlisted()
+{
+  db.collection("PARTICIPANT").where("SHORT_LIST_STATUS", isEqualTo: "YES").get().then((value)
+  {
+    if(value.docs.isNotEmpty)
+    {
+      ShortlistedList.clear();
+      for(var elements in value.docs) {
+        Map<dynamic, dynamic> map = elements.data() as Map;
+        List<dynamic> list = [''];
+        ShortlistedList.add(ParticipatesModel(
+          elements.id,
+          map['CUSTOMER_NAME'].toString(),
+          map['CATEGORY'].toString(),
+          map['CUSTOMER_PHONE'].toString(),
+          map['CATEGORY_ID'].toString(),
+          map['CONTEST_ID'].toString(),
+          list,
+          false,
+          map['SHORT_LIST_STATUS'] ?? "",
+          map['WINNER_STATUS'] ?? "",
+        ));
+        notifyListeners();
+      }
+    }
+    notifyListeners();
+  });
+}
 
 }

@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import '../provider/main_provider.dart';
 
 class UploadScreen extends StatelessWidget {
-  String Contest_id,category,customerPhone,customerID,customerName,categoryID;
+  String Contest_id,category,customerPhone,customerID,customerName,categoryID,contest_theme;
 
   UploadScreen({super.key, required this.Contest_id,
-    required this.category,required this.customerPhone,required this.customerID,required this.customerName,required this.categoryID});
+    required this.category,required this.customerPhone,required this.customerID,required this.customerName,required this.categoryID,required this.contest_theme});
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +168,7 @@ class UploadScreen extends StatelessWidget {
                               InkWell(
                             onTap: () {
                               value.onLoader();
-                              value.UploadWork(context, Contest_id,category,customerPhone,customerID,customerName,categoryID);
+                              value.UploadWork(context, Contest_id,category,customerPhone,customerID,customerName,categoryID,contest_theme);
                             },
                             child: Container(
                               height: 49,
