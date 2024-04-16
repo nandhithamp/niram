@@ -33,6 +33,7 @@ class _MyProfileState extends State<MyProfile> {
                   style: TextStyle(
                       color: Colors.white,
 
+
                       fontSize: 24,
                       fontWeight: FontWeight.normal)),
             ),
