@@ -93,9 +93,9 @@ class OtpScreen extends StatelessWidget {
               SizedBox(height:height/100 ,),
               GestureDetector(
                 onTap: (){
-                  callNextReplacement(context, AdminHome());
-                  // provider.getCarousel();
-                  // callNextReplacement(context, HomeScreen());
+                  // callNextReplacement(context, AdminHome());
+                  provider.getCarousel();
+                  callNextReplacement(context, HomeScreen());
                 },
                 child: Container(
                   height: 57,

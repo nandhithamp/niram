@@ -275,33 +275,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       )),
                 ),
-                GestureDetector(
-                  onTap: (){
-
-                  },
-                  child: Container(
-                      height: 63,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          border: Border.all(color: Color(0xff088090))),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                              backgroundImage: AssetImage("assets/quiz.jpg")),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Quiz",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
-                          )
-                        ],
-                      )),
-                ),
+                // GestureDetector(
+                //   onTap: (){
+                //
+                //   },
+                //   child: Container(
+                //       height: 63,
+                //       width: 150,
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(20),
+                //           color: Colors.white,
+                //           border: Border.all(color: Color(0xff088090))),
+                //       child: Row(
+                //         children: [
+                //           CircleAvatar(
+                //               backgroundImage: AssetImage("assets/quiz.jpg")),
+                //           SizedBox(
+                //             width: 8,
+                //           ),
+                //           Text(
+                //             "Quiz",
+                //             style: TextStyle(
+                //                 fontWeight: FontWeight.w600,
+                //                 fontSize: 16),
+                //           )
+                //         ],
+                //       )),
+                // ),
               ],
             ),
             SizedBox(
