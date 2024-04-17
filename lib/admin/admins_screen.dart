@@ -230,7 +230,7 @@ class Admins extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         body: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               Expanded(
@@ -279,7 +279,7 @@ class Admins extends StatelessWidget {
                                                   },
                                                     child: Image.asset(
                                                       "assets/edit.png",
-                                                      scale: 4,
+                                                      scale: 5,
                                                     ),
                                                   );
                                                 }
@@ -294,7 +294,7 @@ class Admins extends StatelessWidget {
                                                   },
                                                     child: Image.asset(
                                                       "assets/delete.png",
-                                                      scale: 4,
+                                                      scale: 5,
                                                     ),
                                                   );
                                                 }
