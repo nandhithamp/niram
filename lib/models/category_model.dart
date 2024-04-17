@@ -28,6 +28,15 @@ class AdminsModel{
   AdminsModel(this.id,this.admin_photo,this.admin_name,this.admin_designation);
 }
 
+class JuryModel{
+  String id;
+  String jury_photo;
+  String jury_name;
+  String jury_type;
+  String jury_phone;
+  JuryModel(this.id,this.jury_photo,this.jury_name,this.jury_type,this.jury_phone);
+}
+
 class UsersModel{
   String id;
   String users_photo;

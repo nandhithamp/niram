@@ -165,6 +165,7 @@ class AllContests extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               onTap: (){
+                                val.get_jury();
                                 callNext(context, ContestDescriptions(id: val.contestList[index].id, photo: val.contestList[index].photo,
                                   category: val.contestList[index].category,categoryid:val.contestList[index].categoryid,
                                   contest_theme:val.contestList[index].contest_theme, age: val.contestList[index].age,

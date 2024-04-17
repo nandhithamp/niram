@@ -81,8 +81,7 @@ class OtpScreen extends StatelessWidget {
                       ),
 
                       onCompleted: (pin){
-
-
+                        value.verify(context);
                       },
                     ),
                   );

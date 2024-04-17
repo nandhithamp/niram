@@ -15,6 +15,7 @@ import 'package:niram/user/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/refactoring.dart';
+import 'Shortlisted_screen.dart';
 import 'admins_screen.dart';
 import 'allcontests_screen.dart';
 import 'carousel.dart';
@@ -72,9 +73,9 @@ class AdminHome extends StatelessWidget {
                 Consumer<MainProvider>(
                     builder: (context,value,child) {
                       return InkWell(onTap: () {
+                        value.clear_winners();
                         value.get_allwinners();
                         value.getCategory();
-
 
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>WinnersList()));
                       },
@@ -86,10 +87,21 @@ class AdminHome extends StatelessWidget {
                 //   "assets/winners.jpg",
                 //   "Winners",
                 // ),
-                adminhomebtn(
-                  "assets/shortlisted.jpg",
-                  "Shortlisted",
+                Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return InkWell(onTap: () {
+                        value.clear_shortlist();
+                        value.get_allshortlisted();
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Shortlisted_screen()));
+                      },
+                          child: adminhomebtn("assets/shortlisted.jpg", "Shortlisted"));
+                    }
                 ),
+                // adminhomebtn(
+                //   "assets/shortlisted.jpg",
+                //   "Shortlisted",
+                // ),
                 // adminhomebtn(
                 //   "assets/quiz.jpg",
                 //   "Quiz",
@@ -126,7 +138,8 @@ class AdminHome extends StatelessWidget {
                   mainprovider.addAdminImg=null;
                   mainprovider.NameController.clear();
                   mainprovider.PhoneNumberController.clear();
-                  callNext(context, AdminAddJury());
+                  mainprovider.get_jury();
+                  callNext(context, JuryMembers());
                 },
                   child: adminhomebtn(
                     "assets/jury.png",

@@ -54,35 +54,41 @@ class ContestScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 60,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: names.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ShortlistedScreen(),
-                                  ));
-                            },
-                            child: contestcategory(names[index]));
-                      },
+                    child: Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: names.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                                onTap: () {
+                                  value.clear_shortlist();
+                                  value.get_allshortlisted();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ShortlistedScreen(),
+                                      ));
+                                },
+                                child: contestcategory(names[index]));
+                          },
+                        );
+                      }
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("All"),
-                        Text("Upcoming"),
-                        Text("Ongoing"),
-                        Text("Closed"),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text("All"),
+                  //       Text("Upcoming"),
+                  //       Text("Ongoing"),
+                  //       Text("Closed"),
+                  //     ],
+                  //   ),
+                  // ),
                   Consumer<MainProvider>(
                     builder: (context,value,child) {
                       return ListView.builder(

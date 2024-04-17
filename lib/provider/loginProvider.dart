@@ -88,20 +88,22 @@ class LoginProvider extends ChangeNotifier {
       timeout: const Duration(seconds: 60),
     );
   }
-  // void verify(BuildContext context) async {
-  //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //       verificationId: VerificationId, smsCode: otpverifycontroller.text);
-  //   await auth.signInWithCredential(credential).then((value) {
-  //     final user = value.user;
-  //     if (user != null) {
-  //       callNext(context, HomeScreen());
-  //       // userAuthorized(user.phoneNumber, context);
-  //     } else {
-  //       if (kDebugMode) {
-  //       }
-  //     }
-  //   });
-  // }
+
+  void verify(BuildContext context) async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: VerificationId, smsCode: otpverifycontroller.text);
+    await auth.signInWithCredential(credential).then((value) {
+      final user = value.user;
+      print(user);
+      if (user != null) {
+        //callNext(context, HomeScreen(id: user.uid,));
+        // userAuthorized(user.phoneNumber, context);
+      } else {
+        if (kDebugMode) {
+        }
+      }
+    });
+  }
   Future<void> userAuthorized(String? phoneNumber, BuildContext context) async {
     print(phoneNumber.toString()+' IRJRI iRJFN');
     db.collection("USERS").where("Phone_Number",isEqualTo:phoneNumber ).get().then((value) {

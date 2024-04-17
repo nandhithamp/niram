@@ -201,6 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: InkWell(
                       onTap: () async {
+                        print(phoneController.text);
                         if(phoneController.text.length==10){
                           db.collection('USERS').where('Phone_Number',isEqualTo: "+91${phoneController.text}").get().then((value) async {
                             if(value.docs.isNotEmpty){

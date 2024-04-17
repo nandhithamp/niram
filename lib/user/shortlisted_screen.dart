@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:niram/constants/refactoring.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/call_functions.dart';
+import '../provider/main_provider.dart';
 
 class ShortlistedScreen extends StatelessWidget {
   const ShortlistedScreen({super.key});
@@ -14,11 +12,15 @@ class ShortlistedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         appBar: AppBar(
+
           backgroundColor: Colors.transparent,
+
           leading: IconButton(
             onPressed: (){
               back(context);
@@ -28,109 +30,108 @@ class ShortlistedScreen extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          title: Text("Shortlisted",style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w500),),
+          title: Text(
+            "Shortlisted",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
         ),
         extendBodyBehindAppBar: true,
-        body: Stack(children: [
-          SingleChildScrollView(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
-                  height: height / 10,
+                  height: height/7,
                 ),
-                SizedBox(
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    // scrollDirection:  Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Hiba",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  Text('Oil Painting',style: TextStyle(color: Colors.grey.shade600,fontSize: 18),),
+                Consumer<MainProvider>(
+                    builder: (context1, value, child) {
+                      return value.ShortlistedList.isNotEmpty?
+                      ListView.builder(
+                        itemCount: value.ShortlistedList.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var item = value.ShortlistedList[index];
+                          //print(item.list);
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.customer,
+                                        style: TextStyle(
 
-                                  VerticalDivider(
-                                    color: Colors.grey.shade900,
-                                    thickness: 0.5,endIndent: 3,indent: 3
-                                  ),
-                                  Text('Travel',style: TextStyle(color: Colors.grey.shade600,fontSize: 18),),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: height/80,
-                            ),
-                            GestureDetector(
-                              onTap: (){
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                      child: AlertDialog(
-                                        backgroundColor: Colors.white24,
-                                        contentPadding: EdgeInsets.zero,
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0))),
-                                        content: Container(
-                                          width: 360,
-                                          height: 460,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(20),
-                                             image: DecorationImage(image: AssetImage("assets/travel.jpg"),fit: BoxFit.cover)
-
-                                          ),
-
-
-
-                                        ),
-
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
                                       ),
-                                    ));
-                              },
-                              child: Container(
-                                height: 325,
-                                width: 367,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 4,
-                                          offset: Offset(0, 4))
+                                      Text(item.category + " | " + item.contest_theme,
+                                          style: TextStyle(
+
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15,
+                                              color: Colors.grey)),
+                                      SizedBox(height: 10,),
+
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(blurRadius: 15, color: Colors.grey)
+                                            ], borderRadius: BorderRadius.circular(10)),
+                                        height: height / 2.5,
+                                        width: width ,
+                                        child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Image.network(item.list[0],
+                                                fit: BoxFit.cover)),
+                                      ),
                                     ],
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/travel.jpg"),
-                                        fit: BoxFit.cover),
-                                    color: Colors.teal),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Divider(
+                                  color: Colors.black12,
+                                  // endIndent: 2,
+                                  // indent: 2,
+                                  thickness: 1),
+                              SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          );
+                        },
+                      ) :
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text("NO DATA TO SHOW.",
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
-                      );
-                    },
-                  ),
+                      )
+                      ;
+                    }
                 ),
               ],
             ),
           ),
-          Image.asset('assets/Vector 14.png'),
-        ]),
+            Image.asset('assets/Vector 14.png'),
+          ]
+        ),
       ),
     );
   }

@@ -9,19 +9,40 @@ class AdminAddJury extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Shader linearGradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: <Color>[Color(0xff0C8290), Color(0xffBFAB78)],
+    ).createShader(Rect.fromLTWH(10, 40, 100.0, 30.0));
     MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('Add Jury'),
+        iconTheme: IconThemeData(
+          color: Color(0xff0C8290),
+          size: 25,
+        ),
+        centerTitle: true,
+        title: Text("Add Jury",
+            style: TextStyle(
+                fontFamily: "amikosemi",
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                foreground: Paint()..shader = linearGradient)),
+        toolbarHeight: 70,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(4.0), // Adjust the height of the divider
+          child: Divider(color: Color(0xff86B9B4), height: 4.0,thickness: 2), // Add Divider with desired color and height
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
+              SizedBox(height: 20,),
               Consumer<MainProvider>(
                   builder: (context,value,child) {
                     return InkWell(

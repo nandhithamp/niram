@@ -9,6 +9,7 @@ import 'package:niram/user/contest_screen.dart';
 import 'package:niram/user/my_profile.dart';
 import 'package:niram/user/shortlisted_screen.dart';
 import 'package:niram/user/winners_screen.dart';
+import 'package:niram/user/winners_user.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -193,12 +194,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: Container(
                         height: 63,
-                        width: 150,
+                        width: 160,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.white,
                             border: Border.all(color: Color(0xff088090))),
                         child: Row(
+
                           children: [
                             CircleAvatar(
                                 backgroundImage: AssetImage("assets/contests.jpg")),
@@ -217,32 +219,39 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
                 ),
-                GestureDetector(
-                  onTap: (){
-                    callNext(context, WinnersScreen());
-                  },
-                  child: Container(
-                      height: 63,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          border: Border.all(color: Color(0xff088090))),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                              backgroundImage: AssetImage("assets/winners.jpg")),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Winners",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
-                          )
-                        ],
-                      )),
+                Consumer<MainProvider>(
+                  builder: (context,value,child) {
+                    return GestureDetector(
+                      onTap: (){
+                        value.clear_winners();
+                        value.get_allwinners();
+                        value.getCategory();
+                        callNext(context, Winnersuser());
+                      },
+                      child: Container(
+                          height: 63,
+                          width: 160,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                              border: Border.all(color: Color(0xff088090))),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                  backgroundImage: AssetImage("assets/winners.jpg")),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Winners",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16),
+                              )
+                            ],
+                          )),
+                    );
+                  }
                 ),
               ],
             ),
@@ -252,33 +261,39 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: (){
-                    callNext(context, ShortlistedScreen());
-                  },
-                  child: Container(
-                      height: 63,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          border: Border.all(color: Color(0xff088090))),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                              backgroundImage:
-                              AssetImage("assets/shortlisted.jpg")),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Short listed",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
-                          )
-                        ],
-                      )),
+                Consumer<MainProvider>(
+                  builder: (context1,value, child) {
+                    return GestureDetector(
+                      onTap: (){
+                        value.clear_shortlist();
+                        value.get_allshortlisted();
+                        callNext(context, ShortlistedScreen());
+                      },
+                      child: Container(
+                          height: 63,
+                          width: 160,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                              border: Border.all(color: Color(0xff088090))),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                  backgroundImage:
+                                  AssetImage("assets/shortlisted.jpg")),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "Shortlisted",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16),
+                              )
+                            ],
+                          )),
+                    );
+                  }
                 ),
                 GestureDetector(
                   onTap: (){
@@ -286,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Container(
                       height: 63,
-                      width: 150,
+                      width: 160,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white,
