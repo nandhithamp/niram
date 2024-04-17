@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:niram/admin/participants_work.dart';
@@ -8,6 +9,7 @@ import 'package:niram/provider/main_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/mycolors.dart';
+import '../user/login_screen.dart';
 
 class Participants extends StatefulWidget {
   String from;
@@ -50,6 +52,16 @@ class _ParticipantsState extends State<Participants> {
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 foreground: Paint()..shader = linearGradient)),
+        actions: [widget.from=='JURY'?InkWell(onTap: (){
+          FirebaseAuth auth = FirebaseAuth.instance;
+          auth.signOut();
+          callNextReplacement(context, LoginScreen());
+        },
+          child: Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Icon(Icons.logout),
+          ),
+        ):SizedBox()],
       ),
       body: SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
