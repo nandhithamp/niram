@@ -248,40 +248,61 @@ class ContestDescriptions extends StatelessWidget {
                     height: 10,
                   ),
                   Container(
-                    height: height / 6,
+                    //height: height / 6,
                     width: width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Color(0xff047E8F),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8, left: 6),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Jury",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal)),
-                          Text("Jury 1",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold)),
-                          Text("Jury 2",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold)),
-                          Text("Jury 3",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold))
-                        ],
-                      ),
+                    child:  Consumer<MainProvider>(
+                        builder: (context1, value, child) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: value.jury_list.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var item = value.jury_list[index];
+                                return Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    item.jury_name,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              });
+                        }
                     ),
+                    // child: Padding(
+                    //   padding: const EdgeInsets.only(top: 8, left: 6),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Text("Jury",
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 15,
+                    //               fontWeight: FontWeight.normal)),
+                    //       Text("Jury 1",
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 15,
+                    //               fontWeight: FontWeight.bold)),
+                    //       Text("Jury 2",
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 15,
+                    //               fontWeight: FontWeight.bold)),
+                    //       Text("Jury 3",
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 15,
+                    //               fontWeight: FontWeight.bold))
+                    //     ],
+                    //   ),
+                    // ),
                   ),
                   SizedBox(
                     height: 10,

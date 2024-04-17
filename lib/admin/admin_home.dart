@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:niram/admin/add_jury_screen.dart';
 import 'package:niram/admin/participants_screen.dart';
 import 'package:niram/admin/quiz_screen.dart';
 import 'package:niram/admin/users_screen.dart';
@@ -13,6 +15,7 @@ import 'package:niram/user/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/refactoring.dart';
+import 'Shortlisted_screen.dart';
 import 'admins_screen.dart';
 import 'allcontests_screen.dart';
 import 'carousel.dart';
@@ -20,10 +23,12 @@ import 'category_screen.dart';
 import 'jury members_screen.dart';
 
 class AdminHome extends StatelessWidget {
-  const AdminHome({super.key});
+  String userName,phoneNumber,photo;
+   AdminHome({super.key,required this.userName,required this.phoneNumber,required this.photo});
 
   @override
   Widget build(BuildContext context) {
+    MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -41,7 +46,7 @@ class AdminHome extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, left: 20),
                     child: Text(
-                      "Welcome Hari,",
+                      "Welcome "+userName,
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'alef',
@@ -65,14 +70,38 @@ class AdminHome extends StatelessWidget {
                   }
                 ),
 
-                adminhomebtn(
-                  "assets/winners.jpg",
-                  "Winners",
+                Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return InkWell(onTap: () {
+                        value.clear_winners();
+                        value.get_allwinners();
+                        value.getCategory();
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>WinnersList()));
+                      },
+                          child: adminhomebtn("assets/winners.jpg", "Winners"));
+                    }
                 ),
-                adminhomebtn(
-                  "assets/shortlisted.jpg",
-                  "Shortlisted",
+
+                // adminhomebtn(
+                //   "assets/winners.jpg",
+                //   "Winners",
+                // ),
+                Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return InkWell(onTap: () {
+                        value.clear_shortlist();
+                        value.get_allshortlisted();
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Shortlisted_screen()));
+                      },
+                          child: adminhomebtn("assets/shortlisted.jpg", "Shortlisted"));
+                    }
                 ),
+                // adminhomebtn(
+                //   "assets/shortlisted.jpg",
+                //   "Shortlisted",
+                // ),
                 // adminhomebtn(
                 //   "assets/quiz.jpg",
                 //   "Quiz",
@@ -104,9 +133,18 @@ class AdminHome extends StatelessWidget {
                     );
                   }
                 ),
-                adminhomebtn(
-                  "assets/jury.png",
-                  "Jury",
+                InkWell(onTap: (){
+
+                  mainprovider.addAdminImg=null;
+                  mainprovider.NameController.clear();
+                  mainprovider.PhoneNumberController.clear();
+                  mainprovider.get_jury();
+                  callNext(context, JuryMembers());
+                },
+                  child: adminhomebtn(
+                    "assets/jury.png",
+                    "Jury",
+                  ),
                 ),
 
                 Consumer<MainProvider>(
@@ -137,7 +175,9 @@ class AdminHome extends StatelessWidget {
                   builder: (context,value,child) {
                     return InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants()));
+
+                        mainprovider.fetchAllParticipats();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants(from: 'ADMIN',)));
                       },
                       child: adminhomebtn(
                         "assets/quiz.jpg",
@@ -148,6 +188,8 @@ class AdminHome extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+                    FirebaseAuth auth = FirebaseAuth.instance;
+                    auth.signOut();
                     callNextReplacement(context, LoginScreen());
                   },
                   child: Center(
@@ -195,7 +237,8 @@ class AdminHome extends StatelessWidget {
                 backgroundColor: Color(0xff047E8F),
                 child: CircleAvatar(
                   radius: 45,
-                  backgroundImage: AssetImage("assets/profilepic.jpg"),
+                  backgroundImage:photo==''||photo=='null'?
+                  AssetImage("assets/profilepic.jpg"):NetworkImage(photo,) as ImageProvider,
                 ),
               ),
             )

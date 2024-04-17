@@ -12,7 +12,9 @@ import 'package:intl/intl.dart';
 import 'package:niram/constants/call_functions.dart';
 
 import '../admin/admin_home.dart';
+import '../models/ParticipatesModel.dart';
 import '../models/category_model.dart';
+import '../user/upload_screen.dart';
 
 
 class MainProvider extends ChangeNotifier {
@@ -47,19 +49,26 @@ class MainProvider extends ChangeNotifier {
   }
 
   List<CategoryModel> categoryList = [];
+  List<String> categorynameList = [];
 
   void getCategory() {
+
     db.collection("CATEGORY").get().then((value) {
       if (value.docs.isNotEmpty) {
         categoryList.clear();
+        categorynameList.clear();
+        categorynameList = ["Select Contest"];
         for (var e in value.docs) {
           Map<dynamic, dynamic> map = e.data();
 
           categoryList.add(
               CategoryModel(e.id, map["Name"].toString())
           );
-          notifyListeners();
+          categorynameList.add(map["Name"].toString());
+
+
         }
+        notifyListeners();
       }
     });
     notifyListeners();
@@ -256,7 +265,7 @@ class MainProvider extends ChangeNotifier {
 
     if (picked1 != null) {
       to_date = picked1;
-      scheduledtodate = DateTime(_date.year, _date.month, _date.day);
+      scheduledtodate = DateTime(to_date.year, to_date.month, to_date.day);
       todateController.text = outputDateFormatto.format(scheduledtodate);
     }
     notifyListeners();
@@ -304,9 +313,14 @@ class MainProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  Map<dynamic, dynamic> contestmap = {};
+
   void editcontest(String id){
+    contestmap.clear();
     db.collection("CONTESTS").doc(id).get().then((value){
       Map<dynamic, dynamic> map = value.data()as Map;
+      contestmap = value.data()as Map;
       if(value.exists){
         categorynamect.text=map["Category_Name"].toString();
         contestthemect.text=map["ContestTheme"].toString();
@@ -447,7 +461,7 @@ class MainProvider extends ChangeNotifier {
          Map<dynamic, dynamic> map = e.data();
 
          adminsList.add(
-             AdminsModel(e.id,map["PHOTO"].toString(), map["Name"].toString(),map["Designation"].toString())
+             AdminsModel(e.id,map["PHOTO"].toString(), map["Name"].toString(),map["TYPE"]??'')
          );
          notifyListeners();
        }
@@ -455,7 +469,102 @@ class MainProvider extends ChangeNotifier {
    });
    notifyListeners();
  }
- void editAdmins(String id){
+ Future<void> addJoury(BuildContext context) async {
+   HashMap<String,Object>map=HashMap();
+   String key=DateTime.now().millisecondsSinceEpoch.toString();
+   map['Name']=NameController.text;
+   map['Phone_Number']='+91'+PhoneNumberController.text;
+   map['TYPE']='JURY';
+   map['ID']=key;
+   if (addAdminImg != null) {
+     String photoId = DateTime.now().millisecondsSinceEpoch.toString();
+     ref = FirebaseStorage.instance.ref().child(photoId);
+     await ref.putFile(addAdminImg!).whenComplete(() async {
+       await ref.getDownloadURL().then((value) {
+         map["PHOTO"] = value;
+
+         notifyListeners();
+       });
+       notifyListeners();
+     });
+   } else {
+     map['PHOTO'] = '';
+   }
+   db.collection('USERS').doc(key).set(map,SetOptions(merge: true));
+   ScaffoldMessenger.of(context)
+       .showSnackBar( SnackBar(
+     backgroundColor: Colors.white,
+     content: Text(
+         "Added Successfuly",style: TextStyle(color: Colors.blue,fontSize: 14,fontWeight: FontWeight.w800,)),
+     duration:
+     Duration(milliseconds: 3000),
+   ));
+   finish(context);
+ }
+
+ List<JuryModel> jury_list = [];
+ void get_jury()
+ {
+   jury_list.clear();
+   db.collection("USERS").where("TYPE",isEqualTo: "JURY").get().then((value) {
+     if (value.docs.isNotEmpty) {
+       jury_list.clear();
+       for (var e in value.docs) {
+         Map<dynamic, dynamic> map = e.data();
+
+         jury_list.add(
+             JuryModel(e.id,map["PHOTO"].toString(), map["Name"].toString(),map["TYPE"]??'',map["Phone_Number"])
+         );
+         notifyListeners();
+       }
+     }
+   });
+   notifyListeners();
+ }
+ 
+ void makeShortList(String id,BuildContext context){
+   HashMap<String, Object> map = HashMap();
+   map['SHORT_LIST_STATUS']='YES';
+   db.collection('PARTICIPANT').doc(id).set(map,SetOptions(merge: true));
+   ScaffoldMessenger.of(context)
+       .showSnackBar( SnackBar(
+     backgroundColor: Colors.green,
+     content: Center(
+       child: Text(
+           "Successfuly short Listed",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
+     ),
+     duration:
+     Duration(milliseconds: 3000),
+   ));
+   finish(context);
+ }
+
+  void winnerAssign(String id,BuildContext context, String contestid){
+   db.collection("CONTESTS").where("Id", isEqualTo: contestid).where("Status",isEqualTo: "Closed").get().then((value)
+   {
+     if(value.docs.isNotEmpty)
+       {
+         HashMap<String, Object> map = HashMap();
+         map['WINNER_STATUS']='YES';
+         db.collection('PARTICIPANT').doc(id).set(map,SetOptions(merge: true));
+         ScaffoldMessenger.of(context)
+             .showSnackBar( SnackBar(
+           backgroundColor: Colors.green,
+           content: Center(
+             child: Text(
+                 "Successfuly Assigned as Winner",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
+           ),
+           duration:
+           Duration(milliseconds: 3000),
+         ));
+         finish(context);
+       }
+   });
+    
+  }
+
+
+  void editAdmins(String id){
    db.collection("ADMINS").doc(id).get().then((value){
      Map<dynamic, dynamic> map = value.data()as Map;
      if(value.exists){
@@ -500,7 +609,7 @@ class MainProvider extends ChangeNotifier {
 
     HashMap<String, Object> users = HashMap();
     users["Name"] = NameController.text;
-    users["Phone_Number"]=PhoneNumberController.text;
+    users["Phone_Number"]='+91'+PhoneNumberController.text;
     users["TYPE"]="USER";
     users["ID"]=id;
 
@@ -528,6 +637,43 @@ class MainProvider extends ChangeNotifier {
     // getAdmins();
     notifyListeners();
 
+  }
+  int? extractNumber(String text) {
+    RegExp regExp = RegExp(r'\d+');
+    var match = regExp.firstMatch(text);
+    if (match != null) {
+      return int.parse(match.group(0)!);  // Convert the found digits to an integer
+    }
+    return null;  // Return null if no numbers are found
+  }
+  void checkCustomerAge(String id,String age,String category,String customerPhone,String customerID,String customerName,String categoryID,
+      String theme,BuildContext context){
+    print(id+' IIDE iHE');
+    db.collection('CUSTOMER').doc(id).get().then((value){
+      if(value.exists){
+        Map<dynamic,dynamic> map=value.data() as Map;
+        print(map['Age'].toString()+' IRUFNRF iRF');
+        print(age+' EWEDEW iRF');
+        if(int.parse(map['Age'].toString())<=int.parse(extractNumber(age).toString())){
+          imagefileList.clear();
+          notifyListeners();
+          offLoader();
+          callNext(context, UploadScreen(Contest_id: id,customerID:customerID ,categoryID: categoryID,
+          customerName: customerName,customerPhone: customerPhone,category: category,contest_theme: theme));
+        }else{
+          ScaffoldMessenger.of(context)
+              .showSnackBar( SnackBar(
+            backgroundColor: Colors.red,
+            content: Center(
+              child: Text(
+                  "Your are Not eligible for this contest",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w800,)),
+            ),
+            duration:
+            Duration(milliseconds: 3000),
+          ));
+        }
+      }
+    });
   }
   Future UsersgetImagegallery() async {
     final imagePicker = ImagePicker();
@@ -586,7 +732,9 @@ class MainProvider extends ChangeNotifier {
       ],
     );
     if (croppedFile != null) {
+      print(' TTTy EYFE '+imagefileList.length.toString());
       addUsersImg = File(croppedFile.path);
+
       // print(Registerfileimg.toString() + "fofiifi");
       notifyListeners();
     }
@@ -657,7 +805,8 @@ class MainProvider extends ChangeNotifier {
 
       clearCarousel();
       notifyListeners();
-      callNext(context, AdminHome());
+      finish(context);
+      // callNext(context, AdminHome(userName: '',phoneNumber: '',));
     }
 
 
@@ -756,6 +905,7 @@ class MainProvider extends ChangeNotifier {
   // void uploadWork1(){
   //
   // }
+  List<File> imagefileList = [];
   File? addPwork1FileImg = null;
   String Pwork1Img = '';
   File? addPwork2FileImg=null;
@@ -763,43 +913,181 @@ class MainProvider extends ChangeNotifier {
   File? addPwork3FileImg=null;
   String Pwork3Img='';
   List<File> participant_workList=[];
-  Future<void> UploadWork(BuildContext context, String contest_id) async {
-
-    String id = DateTime.now().microsecondsSinceEpoch.toString();
-    HashMap<String, Object> participant_map = HashMap();
-    HashMap<String, Object> work_map = HashMap();
-    int i=1;
-    for(var img in participant_workList ) {
-      if (img != null) {
-        String photoId = DateTime
-            .now()
-            .millisecondsSinceEpoch
-            .toString();
-        ref = FirebaseStorage.instance.ref().child(photoId);
-        await ref.putFile(addCarouselImg!).whenComplete(() async {
-          await ref.getDownloadURL().then((value) {
-            // participant_map["Image"] = value;
-            work_map[i.toString()]=value;
-
-            notifyListeners();
-          });
-          notifyListeners();
-        });
-      }
-      else {
-         //participant_map['Image'] = Image;
-        work_map[i.toString()]=Image;
-      }
-      i++;
-    }
-    participant_map["work"] = work_map;
-    // print("${participant.length}.........................");
-    db.collection("PARTICIPANT").doc(id).set(participant_map);
-
-    clearUploadWork();
+  bool loader=false;
+  void onLoader(){
+    loader=true;
     notifyListeners();
-    callNext(context, AdminHome());
   }
+  void offLoader(){
+    loader=false;
+    notifyListeners();
+  }
+  Future<void> UploadWork(BuildContext context, String contest_id,
+      String category,String customerPhone,String customerID,String customerName,String categoryID, String contest_theme) async {
+    if(imagefileList.length>0) {
+      String id = DateTime
+          .now()
+          .microsecondsSinceEpoch
+          .toString();
+      HashMap<String, Object> participant_map = HashMap();
+      HashMap<String, Object> work_map = HashMap();
+      int i = 1;
+
+      List<String> list = [];
+      if (imagefileList.length > 0) {
+        for (int i = 0; i < imagefileList.length; i++) {
+          String time = DateTime
+              .now()
+              .millisecondsSinceEpoch
+              .toString();
+          ref = FirebaseStorage.instance.ref().child('Images').child(
+              time); // Specify the full path including the filename
+          await ref.putFile(imagefileList[i]).whenComplete(() async {
+            await ref.getDownloadURL().then((value1) {
+              list.add(value1);
+              print(list.toString() + ' KMVKNVKFNV');
+              participant_map["IMAGELIST"] = list;
+              notifyListeners();
+            });
+          });
+        }
+      }
+      participant_map["CUSTOMER_ID"] = customerID;
+      participant_map["CUSTOMER_NAME"] = customerName;
+      participant_map["CUSTOMER_PHONE"] = customerPhone;
+      participant_map["CATEGORY"] = category;
+      participant_map["CATEGORY_ID"] = categoryID;
+      participant_map["CONTEST_ID"] = contest_id;
+      participant_map["CONTEST_THEME"] = contest_theme;
+
+
+      print(participant_map.toString() + ' IFRJF iFRRF');
+      db.collection("PARTICIPANT").doc(id).set(participant_map);
+
+      clearUploadWork();
+      notifyListeners();
+      offLoader();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(
+        backgroundColor: Colors.green,
+        content: Center(
+          child: Text(
+              "Uploaded Successfully", style: TextStyle(
+            color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800,)),
+        ),
+        duration:
+        Duration(milliseconds: 3000),
+      ));
+      finish(context);
+    }else{
+      offLoader();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Center(
+          child: Text(
+              "Please Upload at least one photo", style: TextStyle(
+            color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800,)),
+        ),
+        duration:
+        Duration(milliseconds: 3000),
+      ));
+    }
+    notifyListeners();
+    // callNext(context, AdminHome());
+  }
+
+  List<ParticipatesModel> ParticipatesList=[];
+  List<ParticipatesModel> filterParticipatesList=[];
+  List<CategorySelectionModel> categoriesSelectionList=[];
+  String contest_status = "Ongoing";
+
+  void fetchAllParticipats(){
+    ParticipatesList.clear();
+    filterParticipatesList.clear();
+    db.collection('PARTICIPANT').snapshots().listen((value){
+      if(value.docs.isNotEmpty){
+        filterParticipatesList.clear();
+        for(var elements in value.docs){
+          Map<dynamic,dynamic> map=elements.data() as Map;
+          List<dynamic> list=[''];
+          if(map['IMAGELIST']!=null){
+            list=map['IMAGELIST'];
+            print(' JFNDIRF FRI FR');
+          }
+          categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+              map['CATEGORY'].toString(), false));
+          ParticipatesList.add(ParticipatesModel(elements.id,
+            map['CUSTOMER_NAME'].toString(), map['CATEGORY'].toString(),
+            map['CUSTOMER_PHONE'].toString(), map['CATEGORY_ID'].toString(),
+            map['CONTEST_ID'].toString(), map['CONTEST_THEME'].toString(),
+            list,false,
+            map['SHORT_LIST_STATUS']??"",
+            map['WINNER_STATUS']??"",
+          ));
+        }
+        filterParticipatesList=ParticipatesList;
+        categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+        notifyListeners();
+      }
+    });
+
+  }
+
+  Future<bool> check_conteststatus(String contestid)
+  async {
+    var stat = await db.collection("CONTESTS").where("Id", isEqualTo: contestid).where("Status", isEqualTo: "Closed").get();
+    if(stat.docs.isNotEmpty)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  void filterFun(int index,String name,String catID){
+    print(filterParticipatesList.length.toString()+'  '+ParticipatesList.length.toString()+' IFRF IRO FR F'+catID);
+    filterParticipatesList=ParticipatesList.where((element) => element.categoryID==catID).toSet().toList();
+    notifyListeners();
+    if(categoriesSelectionList[index].selectionBool){
+      categoriesSelectionList[index].selectionBool=false;
+    }else{
+      categoriesSelectionList[index].selectionBool=true;
+    }
+    for(var ee in categoriesSelectionList){
+    if(ee.catName!=name){
+      ee.selectionBool=false;
+    }
+    }
+    for(var rr in ParticipatesList){
+      print(rr.categoryID+' IFRNFR '+catID);
+    }
+
+    notifyListeners();
+  }
+
+  List<CategorySelectionModel> removeCategorySelectionModel(List<CategorySelectionModel> processModal){
+
+    List<CategorySelectionModel> temp = [];
+    List<String> sampleStrings = [];
+
+    for(var sample in processModal) {
+      var sampleString =
+          sample.catID.toString()+" "
+              + sample.catName.toString()+" "
+      ;
+
+      if(!sampleStrings.contains(sampleString)){
+        sampleStrings.add(sampleString);
+        temp.add(sample);
+      }
+    }
+
+    return temp;
+  }
+
   Future getImgwork1gallery() async {
     final imagePicker = ImagePicker();
     final pickedImage =
@@ -859,6 +1147,9 @@ class MainProvider extends ChangeNotifier {
     );
     if (croppedFile != null) {
       addPwork1FileImg = File(croppedFile.path);
+      if(imagefileList.length<3){
+        imagefileList.add( File(croppedFile.path)!);
+      }
       // print(Registerfileimg.toString() + "fofiifi");
       notifyListeners();
     }
@@ -993,8 +1284,199 @@ class MainProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   void clearUploadWork(){
     participant_workList.clear();
+    notifyListeners();
   }
+
+  List<ParticipatesModel> WinnerList=[];
+  List<ParticipatesModel> ShortlistedList=[];
+  String winnerdropdownvalue = "Select Contest";
+  
+  void change_contestdropdownval(String newval)
+  {
+    winnerdropdownvalue  = newval;
+    notifyListeners();
+    
+  }
+  
+  void getcontestid(String contestname)
+  {
+    //db.collection("CONTESTS").where()
+  }
+
+void get_allwinners()
+{
+  db.collection("PARTICIPANT").where("WINNER_STATUS", isEqualTo: "YES").get().then((value)
+  {
+    if(value.docs.isNotEmpty)
+      {
+        WinnerList.clear();
+        filterParticipatesList.clear();
+        for(var elements in value.docs) {
+          Map<dynamic, dynamic> map = elements.data() as Map;
+          List<dynamic> list = [''];
+          if(map['IMAGELIST']!=null){
+            list=map['IMAGELIST'];
+            //print(' JFNDIRF FRI FR');
+          }
+          categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+              map['CATEGORY'].toString(), false));
+          WinnerList.add(ParticipatesModel(
+            elements.id,
+            map['CUSTOMER_NAME'].toString(),
+            map['CATEGORY'].toString(),
+            map['CUSTOMER_PHONE'].toString(),
+            map['CATEGORY_ID'].toString(),
+            map['CONTEST_ID'].toString(),
+            map['CONTEST_THEME'].toString(),
+            list,
+            false,
+            map['SHORT_LIST_STATUS'] ?? "",
+            map['WINNER_STATUS'] ?? "",
+          ));
+          notifyListeners();
+        }
+        filterParticipatesList=WinnerList;
+        categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+      }
+    notifyListeners();
+  });
+}
+
+void get_contestwinner(String categoryname)
+{
+
+  if(categoryname != "Select Contest")
+    {
+      WinnerList.clear();
+      db.collection("PARTICIPANT").where("WINNER_STATUS", isEqualTo: "YES").where("CATEGORY", isEqualTo: categoryname).get().then((value)
+      {
+        if(value.docs.isNotEmpty)
+        {
+
+          filterParticipatesList.clear();
+          for(var elements in value.docs) {
+            Map<dynamic, dynamic> map = elements.data() as Map;
+            List<dynamic> list = [''];
+            if(map['IMAGELIST']!=null){
+              list=map['IMAGELIST'];
+              //print(' JFNDIRF FRI FR');
+            }
+            categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+                map['CATEGORY'].toString(), false));
+            WinnerList.add(ParticipatesModel(
+              elements.id,
+              map['CUSTOMER_NAME'].toString(),
+              map['CATEGORY'].toString(),
+              map['CUSTOMER_PHONE'].toString(),
+              map['CATEGORY_ID'].toString(),
+              map['CONTEST_ID'].toString(),
+              map['CONTEST_THEME'].toString(),
+              list,
+              false,
+              map['SHORT_LIST_STATUS'] ?? "",
+              map['WINNER_STATUS'] ?? "",
+            ));
+
+          }
+          filterParticipatesList=WinnerList;
+          categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+        }
+        notifyListeners();
+      });
+      notifyListeners();
+    }
+  else
+    {
+      WinnerList.clear();
+      db.collection("PARTICIPANT").where("WINNER_STATUS", isEqualTo: "YES").get().then((value)
+      {
+        if(value.docs.isNotEmpty)
+        {
+
+          filterParticipatesList.clear();
+          for(var elements in value.docs) {
+            Map<dynamic, dynamic> map = elements.data() as Map;
+            List<dynamic> list = [''];
+            if(map['IMAGELIST']!=null){
+              list=map['IMAGELIST'];
+              //print(' JFNDIRF FRI FR');
+            }
+            categoriesSelectionList.add(CategorySelectionModel(map['CATEGORY_ID'].toString(),
+                map['CATEGORY'].toString(), false));
+            WinnerList.add(ParticipatesModel(
+              elements.id,
+              map['CUSTOMER_NAME'].toString(),
+              map['CATEGORY'].toString(),
+              map['CUSTOMER_PHONE'].toString(),
+              map['CATEGORY_ID'].toString(),
+              map['CONTEST_ID'].toString(),
+              map['CONTEST_THEME'].toString(),
+              list,
+              false,
+              map['SHORT_LIST_STATUS'] ?? "",
+              map['WINNER_STATUS'] ?? "",
+            ));
+
+          }
+          filterParticipatesList=WinnerList;
+          categoriesSelectionList=removeCategorySelectionModel(categoriesSelectionList);
+        }
+        notifyListeners();
+      });
+    }
+  notifyListeners();
+}
+
+void get_allshortlisted()
+{
+  ShortlistedList.clear();
+  db.collection("PARTICIPANT").where("SHORT_LIST_STATUS", isEqualTo: "YES").get().then((value)
+  {
+    if(value.docs.isNotEmpty)
+    {
+
+      for(var elements in value.docs) {
+        Map<dynamic, dynamic> map = elements.data() as Map;
+        List<dynamic> list = [''];
+        if(map['IMAGELIST']!=null){
+          list=map['IMAGELIST'];
+          //print(' JFNDIRF FRI FR');
+        }
+        ShortlistedList.add(ParticipatesModel(
+          elements.id,
+          map['CUSTOMER_NAME'].toString(),
+          map['CATEGORY'].toString(),
+          map['CUSTOMER_PHONE'].toString(),
+          map['CATEGORY_ID'].toString(),
+          map['CONTEST_ID'].toString(),
+          map['CONTEST_THEME'].toString(),
+          list,
+          false,
+          map['SHORT_LIST_STATUS'] ?? "",
+          map['WINNER_STATUS'] ?? "",
+        ));
+
+      }
+    }
+    notifyListeners();
+  });
+  notifyListeners();
+}
+
+void clear_winners()
+{
+  winnerdropdownvalue = "Select Contest";
+  WinnerList.clear();
+  notifyListeners();
+}
+
+void clear_shortlist()
+{
+  ShortlistedList.clear();
+  notifyListeners();
+}
 
 }

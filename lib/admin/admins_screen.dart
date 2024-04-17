@@ -38,6 +38,11 @@ class Admins extends StatelessWidget {
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   foreground: Paint()..shader = linearGradient)),
+          toolbarHeight: 70,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(4.0), // Adjust the height of the divider
+            child: Divider(color: Color(0xff86B9B4), height: 4.0,thickness: 2), // Add Divider with desired color and height
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Consumer<MainProvider>(
@@ -224,101 +229,104 @@ class Admins extends StatelessWidget {
           }
         ),
         backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Expanded(
-                child: Consumer<MainProvider>(
-                  builder: (context,value,child) {
-                    return ListView.builder(
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Expanded(
+                  child: Consumer<MainProvider>(
+                    builder: (context,value,child) {
+                      return ListView.builder(
 
-                        shrinkWrap: true,
-                        itemCount: value.adminsList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Container(
-                                height: 131,
-                                width: 300,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(0xff047E8F),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: CircleAvatar(
-                                        backgroundImage: NetworkImage(value.adminsList[index].admin_photo),
-                                        radius: 50,
+                          shrinkWrap: true,
+                          itemCount: value.adminsList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                  height: 131,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Color(0xff047E8F),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10),
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(value.adminsList[index].admin_photo),
+                                          radius: 50,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 30,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: width / 2.8,
-                                            ),
-                                            Consumer<MainProvider>(
-                                              builder: (context,value,child) {
-                                                return InkWell(onTap: () {
-                                                  value.editAdmins(value.adminsList[index].id.toString());
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          //SizedBox(height: 10,),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: width / 2.8,
+                                              ),
+                                              Consumer<MainProvider>(
+                                                builder: (context,value,child) {
+                                                  return InkWell(onTap: () {
+                                                    value.editAdmins(value.adminsList[index].id.toString());
+                                                  },
+                                                    child: Image.asset(
+                                                      "assets/edit.png",
+                                                      scale: 5,
+                                                    ),
+                                                  );
+                                                }
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Consumer<MainProvider>(
+                                                builder: (context,value,child) {
+                                                  return InkWell(onTap: () {
+                                                    // value.deleteAdmin();
+                                                  },
+                                                    child: Image.asset(
+                                                      "assets/delete.png",
+                                                      scale: 5,
+                                                    ),
+                                                  );
+                                                }
+                                              ),
+                                            ],
+                                          ),
+                                          Text( value.adminsList[index].admin_name.toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(value.adminsList[index].admin_designation.toString().toLowerCase(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: height / 20,
+                                          ),
+                                        ],
+                                      ),
 
-                                                },
-                                                  child: Image.asset(
-                                                    "assets/edit.png",
-                                                    scale: 4,
-                                                  ),
-                                                );
-                                              }
-                                            ),
-                                            SizedBox(
-                                              width: 8,
-                                            ),
-                                            Consumer<MainProvider>(
-                                              builder: (context,value,child) {
-                                                return InkWell(onTap: () {
-                                                  // value.deleteAdmin();
-                                                },
-                                                  child: Image.asset(
-                                                    "assets/delete.png",
-                                                    scale: 4,
-                                                  ),
-                                                );
-                                              }
-                                            ),
-                                          ],
-                                        ),
-                                        Text( value.adminsList[index].admin_name.toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(value.adminsList[index].admin_designation.toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          height: height / 20,
-                                        ),
-                                      ],
-                                    ),
-
-                                  ],
-                                )),
-                          );
-                        });
-                  }
-                )),
-          ],
+                                    ],
+                                  )),
+                            );
+                          });
+                    }
+                  )),
+            ],
+          ),
         ),
       ),
     );

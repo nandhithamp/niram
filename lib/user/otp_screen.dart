@@ -81,8 +81,7 @@ class OtpScreen extends StatelessWidget {
                       ),
 
                       onCompleted: (pin){
-
-
+                        value.verify(context);
                       },
                     ),
                   );
@@ -95,7 +94,7 @@ class OtpScreen extends StatelessWidget {
                 onTap: (){
                   // callNextReplacement(context, AdminHome());
                   provider.getCarousel();
-                  callNextReplacement(context, HomeScreen());
+                  // callNextReplacement(context, HomeScreen());
                 },
                 child: Container(
                   height: 57,

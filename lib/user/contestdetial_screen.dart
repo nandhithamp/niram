@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:niram/constants/call_functions.dart';
 import 'package:niram/constants/refactoring.dart';
 import 'package:niram/user/upload_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/main_provider.dart';
 
 class ContestDetials extends StatelessWidget {
   String id;
@@ -17,13 +20,17 @@ class ContestDetials extends StatelessWidget {
   String from_date;
   String to_date;
   String termsand_condition;
+  String customerID;
+  String customerName;
+  String customerPhone;
   ContestDetials({super.key,required this.id,required this.photo,required this.category,
     required this.categoryid,required this.contest_theme,required this.age,required this.registation_fee,
     required this.status,required this.winning_price,required this.from_date,required this.to_date,
-    required this.termsand_condition});
+    required this.termsand_condition, required this.customerID,required this.customerPhone,required this.customerName,});
 
   @override
   Widget build(BuildContext context) {
+    MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
@@ -170,7 +177,7 @@ class ContestDetials extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: (){
-                              callNext(context, UploadScreen(Contest_id: id,));
+                              mainprovider.checkCustomerAge(id,age,category,customerPhone,customerID,customerName,categoryid,contest_theme,context);
                             },
                             child: Container(
                               height: height / 20,

@@ -6,11 +6,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:niram/admin/admin_home.dart';
+import 'package:niram/admin/jury%20members_screen.dart';
 import 'package:niram/constants/call_functions.dart';
 import 'package:niram/user/home_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../admin/participants_screen.dart';
 import '../user/otp_screen.dart';
+import 'main_provider.dart';
 
 
 
@@ -84,16 +88,51 @@ class LoginProvider extends ChangeNotifier {
       timeout: const Duration(seconds: 60),
     );
   }
+
   void verify(BuildContext context) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: VerificationId, smsCode: otpverifycontroller.text);
     await auth.signInWithCredential(credential).then((value) {
       final user = value.user;
+      print(user);
       if (user != null) {
-        callNext(context, HomeScreen());
+        //callNext(context, HomeScreen(id: user.uid,));
         // userAuthorized(user.phoneNumber, context);
       } else {
         if (kDebugMode) {
+        }
+      }
+    });
+  }
+  Future<void> userAuthorized(String? phoneNumber, BuildContext context) async {
+    print(phoneNumber.toString()+' IRJRI iRJFN');
+    db.collection("USERS").where("Phone_Number",isEqualTo:phoneNumber ).get().then((value) {
+      if(value.docs.isNotEmpty){
+        for(var element in value.docs){
+          Map<dynamic,dynamic> map = element.data();
+          String adminName=map['Name'].toString();
+          String id=element.id;
+          print(element.id+' JORMFRF');
+          String phone=map['Phone_Number'].toString();
+          if(map['TYPE'].toString()=='ADMIN') {
+            FocusScope.of(context).unfocus();
+            callNextReplacement(context,AdminHome(phoneNumber: phone,userName: adminName,photo: map['PHOTO']??""), );
+          }else if(map['TYPE'].toString()=='USER'){
+            MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+            mainprovider.getCarousel();
+            callNextReplacement(context, HomeScreen(phone: phone,name: adminName,photo:  map['PHOTO']??"",id: id,));
+          }else if(map['TYPE'].toString()=='JURY'){
+            MainProvider mainprovider =Provider.of<MainProvider>(context,listen:false);
+            mainprovider.fetchAllParticipats();
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Participants(from: 'JURY',)));
+          }else{
+            const snackBar = SnackBar(
+              content: Center(child: Text('Invalid User',style: TextStyle(color: Colors.white),)),
+              backgroundColor: Colors.red,
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         }
       }
     });

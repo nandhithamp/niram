@@ -10,7 +10,8 @@ import '../constants/refactoring.dart';
 import 'contestdetial_screen.dart';
 
 class ContestScreen extends StatelessWidget {
-  const ContestScreen({super.key});
+  String customerID,customerPhone,customerName;
+  ContestScreen({super.key,required this.customerID,required this.customerPhone,required this.customerName});
 
   @override
   Widget build(BuildContext context) {
@@ -53,35 +54,41 @@ class ContestScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 60,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: names.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ShortlistedScreen(),
-                                  ));
-                            },
-                            child: contestcategory(names[index]));
-                      },
+                    child: Consumer<MainProvider>(
+                      builder: (context,value,child) {
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: names.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                                onTap: () {
+                                  value.clear_shortlist();
+                                  value.get_allshortlisted();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ShortlistedScreen(),
+                                      ));
+                                },
+                                child: contestcategory(names[index]));
+                          },
+                        );
+                      }
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("All"),
-                        Text("Upcoming"),
-                        Text("Ongoing"),
-                        Text("Closed"),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text("All"),
+                  //       Text("Upcoming"),
+                  //       Text("Ongoing"),
+                  //       Text("Closed"),
+                  //     ],
+                  //   ),
+                  // ),
                   Consumer<MainProvider>(
                     builder: (context,value,child) {
                       return ListView.builder(
@@ -92,12 +99,13 @@ class ContestScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: (){
-                              callNext(context, ContestDetials(id: value.contestList[index].id, photo: value.contestList[index].photo,
+                              callNext(context, ContestDetials(id: value.contestList[index].id, photo: value.contestList[index].photo,customerID: customerID,
                                 category: value.contestList[index].category, categoryid: value.contestList[index].categoryid,
                                 contest_theme:value.contestList[index].contest_theme,age: value.contestList[index].age,
                                 registation_fee: value.contestList[index].registation_fee, status: value.contestList[index].status,
                                 winning_price:value.contestList[index].winning_price, from_date: value.contestList[index].from_date,
-                                to_date: value.contestList[index].to_date, termsand_condition: value.contestList[index].termsand_condition,));
+                                to_date: value.contestList[index].to_date, termsand_condition: value.contestList[index].termsand_condition,
+                              customerPhone: customerPhone,customerName: customerName,));
                             },
                             child: Padding(
                               padding:

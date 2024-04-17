@@ -8,8 +8,8 @@ import '../constants/call_functions.dart';
 import '../constants/refactoring.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
-
+   RegisterScreen({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -27,28 +27,30 @@ class RegisterScreen extends StatelessWidget {
                     image: DecorationImage(
                         image: AssetImage("assets/Vector 6 (5).png"),
                         fit: BoxFit.cover)),
-                child:Column(
-                  children: [
-                    SizedBox(height: height/80,),
-                    Padding(
-                      padding:  EdgeInsets.only(right: width/30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: height/20,),
-                          CircleAvatar(
-                            radius: 21,
-                            backgroundColor: Colors.teal.shade200,
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundImage: AssetImage("assets/niram_logo.jpg"),
+                child:Form(key: formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: height/80,),
+                      Padding(
+                        padding:  EdgeInsets.only(right: width/30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(height: height/20,),
+                            CircleAvatar(
+                              radius: 21,
+                              backgroundColor: Colors.teal.shade200,
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: AssetImage("assets/niram_logo.jpg"),
+                              ),
                             ),
-                          ),
 
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
       
               ),
@@ -63,14 +65,16 @@ class RegisterScreen extends StatelessWidget {
                           onTap: () {
                             showBottomSheet(context);
                           },
-                          child: value.addUsersImg!=null?CircleAvatar(
-                              backgroundColor: Color(0xff249C99),
-                              radius: 40,
-
-                              child:Image.file(value.addUsersImg!,
+                          child:
+                          value.addUsersImg!=null?Container(
+                            height: 100,width: 100,
+                            child: ClipRRect( borderRadius: BorderRadius.circular(10),
+                              child: Image.file(value.addUsersImg!,fit: BoxFit.cover,
                               scale: 4,
-                              )
-                          ):value.UsersImg!=""?CircleAvatar(
+                              ),
+                            ),
+                          ):
+                          value.UsersImg!=""&&value.addUsersImg!=null?CircleAvatar(
                               backgroundColor:Color(0xff249C99),
                               radius: 40,
                               child: Image.network(
@@ -134,8 +138,45 @@ class RegisterScreen extends StatelessWidget {
                       builder: (context,value,child) {
                         return InkWell(
                           onTap: (){
-                            value.addCustomers();
-                            back(context);
+                        var form = formKey.currentState;
+                        if (form!.validate()) {
+                          if(value.NameController.text.isNotEmpty&&value.PhoneNumberController.text.isNotEmpty&&value.AgeController.text.isNotEmpty
+                              &&value.PlaceController.text.isNotEmpty){
+                            if (value.addUsersImg != null) {
+                              value.addCustomers();
+                              back(context);
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Center(
+                                  child: Text(
+                                      "Please Upload Profile Image",
+                                      style: TextStyle(color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,)),
+                                ),
+                                duration:
+                                Duration(milliseconds: 3000),
+                              ));
+                            }
+                          }else{
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Center(
+                                child: Text(
+                                    "Please Fill All Details",
+                                    style: TextStyle(color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w800,)),
+                              ),
+                              duration:
+                              Duration(milliseconds: 3000),
+                            ));
+                          }
+
+                        }
 
                              // callNextReplacement(context, LoginScreen());
                           },
@@ -176,21 +217,25 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(
                 height: height/15,
               ),
-              Container(width: width,
-                height: height / 5,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/Vector 6 (6).png"),
-                        fit: BoxFit.cover)),
-                child: Row(
-                  children: [
-                    SizedBox(width: width/6,),
-                    Text("Already have an account?",style: TextStyle(fontSize: 15,color: Color(0xff047E8F)),),
-                    GestureDetector(onTap: (){
-                      callNextReplacement(context, LoginScreen());
-                    },
-                        child: Text("Login Now",style: TextStyle(fontSize: 15,color: Color(0xff785E19)))),
-                  ],
+              InkWell(onTap: (){
+                callNextReplacement(context, LoginScreen());
+              },
+                child: Container(width: width,
+                  height: height / 5,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/Vector 6 (6).png"),
+                          fit: BoxFit.cover)),
+                  child: Row(
+                    children: [
+                      SizedBox(width: width/6,),
+                      Text("Already have an account?",style: TextStyle(fontSize: 15,color: Color(0xff047E8F)),),
+                      GestureDetector(onTap: (){
+                        callNextReplacement(context, LoginScreen());
+                      },
+                          child: Text("Login Now",style: TextStyle(fontSize: 15,color: Color(0xff785E19)))),
+                    ],
+                  ),
                 ),
               ),
             ],

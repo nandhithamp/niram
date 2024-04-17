@@ -45,6 +45,11 @@ class _AddContestsState extends State<AddContests> {
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   foreground: Paint()..shader = linearGradient)),
+          toolbarHeight: 70,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(4.0), // Adjust the height of the divider
+            child: Divider(color: Color(0xff86B9B4), height: 4.0,thickness: 2), // Add Divider with desired color and height
+          ),
         ),
         floatingActionButton: Container(
           height: height / 16,
@@ -417,7 +422,7 @@ class _AddContestsState extends State<AddContests> {
                               fontWeight: FontWeight.normal),
                         ),
                         Container(
-                          width: 120,
+                          width: 121,
                           height: 50,
                           color: Color(0xff0C8290),
                           child: Consumer<MainProvider>(
